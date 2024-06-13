@@ -202,3 +202,9 @@ function removeNonBlackColors(imageData) {
         }
     }
 }
+
+function completeWithBlack(imageData) {
+    const data = imageData.data;
+
+    
+}

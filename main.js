@@ -66,6 +66,8 @@ const App = {
 
             removeNonBlackColors(imageData);
 
+            completeWithBlack(imageData);
+
             dContext.putImageData(imageData, 0, 0);
         },
     }
