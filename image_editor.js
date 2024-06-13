@@ -161,6 +161,23 @@ function colorDistance(data, oriIdx, dstIdx) {
     );
 };
 
-function keepOnlyBlack() {
-    
+function removeNonBlackColors(imageData) {
+    const data = imageData.data;
+
+    for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const a = data[i + 3];
+
+        if (r === 0 && g === 0 && b === 0 && a === 255) {
+            // 何もしない
+        }
+        else {
+            data[i] = 255;
+            data[i + 1] = 255;
+            data[i + 2] = 255;
+            data[i + 3] = 255;
+        }
+    }
 }

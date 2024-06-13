@@ -64,6 +64,8 @@ const App = {
 
             outline(imageData, this.baseColorDistance);
 
+            removeNonBlackColors(imageData);
+
             dContext.putImageData(imageData, 0, 0);
         },
     }
