@@ -245,3 +245,25 @@ function completeWithBlack(imageData) {
         }
     }
 }
+
+function medianFilter(imageData) {
+    const data = imageData.data;
+    const width = imageData.width;
+    const height = imageData.height;
+    const copy = new Uint8ClampedArray(data);
+    for (let y = 1; y < height - 1; y++) {
+        for (let x = 1; x < width - 1; x++) {
+            for (let c = 0; c < 3; c++) {
+                const pixels = [];
+                for (let dy = -1; dy <= 1; dy++) {
+                    for (let dx = -1; dx <= 1; dx++) {
+                        const index = ((y + dy) * width + (x + dx)) * 4 + c;
+                        pixels.push(copy[index]);
+                    }
+                }
+                pixels.sort((a, b) => a - b);
+                data[(y * width + x) * 4 + c] = pixels[4];
+            }
+        }
+    }
+}

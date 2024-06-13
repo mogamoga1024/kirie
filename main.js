@@ -68,6 +68,8 @@ const App = {
 
             completeWithBlack(imageData);
 
+            medianFilter(imageData);
+
             dContext.putImageData(imageData, 0, 0);
         },
     }
