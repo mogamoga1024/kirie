@@ -215,12 +215,33 @@ function completeWithBlack(imageData) {
     const data = imageData.data;
 
     for (let i = 0; i < data.length; i += 4) {
+        const leftIdx = i - 4;
         const rightIdx = i + 4;
+        const overIdx = i + imageData.width * -4;
         const underIdx = i + imageData.width * 4;
     
         const existsLeft = (i / 4) % imageData.width !== 0;
         const existsRight = (i / 4 + 1) % imageData.width !== 0;
         const existsOver = i >= imageData.width * 4;
         const existsUnder = i <= imageData.width * 4 * (imageData.height - 1);
+
+        if (existsLeft && existsRight && existsOver && existsUnder) {
+            if (
+                data[leftIdx] === 0 &&
+                data[leftIdx + 1] === 0 &&
+                data[leftIdx + 2] === 0 &&
+                data[rightIdx] === 0 &&
+                data[rightIdx + 1] === 0 &&
+                data[rightIdx + 2] === 0 &&
+                data[overIdx] === 0 &&
+                data[overIdx + 1] === 0 &&
+                data[overIdx + 2] === 0 &&
+                data[underIdx] === 0 &&
+                data[underIdx + 1] === 0 &&
+                data[underIdx + 2] === 0
+            ) {
+                data[i] = data[i + 1] = data[i + 2] = 0;
+            }
+        }
     }
 }
