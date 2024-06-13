@@ -47,7 +47,7 @@ const App = {
 
             image.src = URL.createObjectURL(imageFile);
         },
-        drawImage(image, mcMaxColorCount = 128) {
+        drawImage(image, mcMaxColorCount = 128, baseColorDistance = 40) {
             const canvas = this.$refs.canvas;
             const context = canvas.getContext("2d");
             canvas.width = image.width;
@@ -57,6 +57,8 @@ const App = {
             const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
             medianCut(imageData, mcMaxColorCount);
+
+            outline(imageData, baseColorDistance);
 
             context.putImageData(imageData, 0, 0);
         },

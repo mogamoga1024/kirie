@@ -1,22 +1,25 @@
 
-function outline(imageData, i, baseColorDistance = 30) {
+function outline(imageData, baseColorDistance = 30) {
     const data = imageData.data;
-    const rightIdx = i + 4;
-    const underIdx = i + imageData.width * 4;
 
-    const existsRight = (i / 4 + 1) % imageData.width !== 0;
-    const existsUnder = i <= imageData.width * 4 * (imageData.height - 1);
-
-    let didChangeColor = false;
-    if (existsRight) {
-        if (colorDistance(data, i, rightIdx) > baseColorDistance) {
-            data[i] = data[i + 1] = data[i + 2] = 0;
-            didChangeColor = true;
+    for (let i = 0; i < data.length; i += 4) {
+        const rightIdx = i + 4;
+        const underIdx = i + imageData.width * 4;
+    
+        const existsRight = (i / 4 + 1) % imageData.width !== 0;
+        const existsUnder = i <= imageData.width * 4 * (imageData.height - 1);
+    
+        let didChangeColor = false;
+        if (existsRight) {
+            if (colorDistance(data, i, rightIdx) > baseColorDistance) {
+                data[i] = data[i + 1] = data[i + 2] = 0;
+                didChangeColor = true;
+            }
         }
-    }
-    if (!didChangeColor && existsUnder) {
-        if (colorDistance(data, i, underIdx) > baseColorDistance) {
-            data[i] = data[i + 1] = data[i + 2] = 0;
+        if (!didChangeColor && existsUnder) {
+            if (colorDistance(data, i, underIdx) > baseColorDistance) {
+                data[i] = data[i + 1] = data[i + 2] = 0;
+            }
         }
     }
 };
