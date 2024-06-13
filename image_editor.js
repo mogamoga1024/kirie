@@ -136,16 +136,34 @@ function outline(imageData, baseColorDistance = 30) {
         const existsRight = (i / 4 + 1) % imageData.width !== 0;
         const existsUnder = i <= imageData.width * 4 * (imageData.height - 1);
     
-        let didChangeColor = false;
+        if (data[i] === 0 && data[i + 1] === 0 && data[i + 2] === 0) {
+            continue;
+        }
+
         if (existsRight) {
+            if (
+                data[rightIdx] === 0 &&
+                data[rightIdx + 1] === 0 &&
+                data[rightIdx + 2] === 0
+            ) {
+                continue;
+            }
             if (colorDistance(data, i, rightIdx) > baseColorDistance) {
                 data[i] = data[i + 1] = data[i + 2] = 0;
-                didChangeColor = true;
+                data[rightIdx] = data[rightIdx + 1] = data[rightIdx + 2] = 0;
             }
         }
-        if (!didChangeColor && existsUnder) {
+        if (existsUnder) {
+            if (
+                data[underIdx] === 0 &&
+                data[underIdx + 1] === 0 &&
+                data[underIdx + 2] === 0
+            ) {
+                continue;
+            }
             if (colorDistance(data, i, underIdx) > baseColorDistance) {
                 data[i] = data[i + 1] = data[i + 2] = 0;
+                data[underIdx] = data[underIdx + 1] = data[underIdx + 2] = 0;
             }
         }
     }

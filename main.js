@@ -6,7 +6,7 @@ const App = {
         return {
             imageFileName: "",
             mcMaxColorCount: 128, // todo いらんかも
-            baseColorDistance: 50,
+            baseColorDistance: 30,
         };
     },
     created() {
