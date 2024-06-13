@@ -1,0 +1,51 @@
+
+.btn {
+  display: inline-block;
+  height: 25px;
+  line-height: 25px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: 2px solid #007BAE;
+  font-weight: bold;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  color: #007BAE;
+  background-color: white;
+  text-align: center;
+}
+
+@media (any-hover: hover) {
+  .btn {
+    transition: background-color 0.2s;
+  }
+
+  .btn:hover {
+    background-color: lightcyan;
+  }
+}
+
+.input-file input[type="file"] {
+  display: none;
+}
+
+.input-file-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.input-file {
+  white-space: nowrap;
+}
+
+.file-name {
+  width: 350px;
+  margin-left: 18px;
+  
+  white-space: wrap;
+  overflow-wrap: break-word;
+  word-break: break-all;
+}
+
+
