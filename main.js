@@ -2,14 +2,16 @@
 const App = {
     data() {
         return {
-
+            imageFileName: "",
         };
     },
     created() {
         // noop
     },
     methods: {
-        // noop
+        onChangeInputImageFile(e) {
+            // noop
+        },
     }
 };
 
