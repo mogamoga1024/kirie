@@ -1,4 +1,8 @@
 
+[v-cloak] {
+  display: none !important;
+}
+
 .btn {
   display: inline-block;
   height: 25px;
