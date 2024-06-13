@@ -214,5 +214,13 @@ function removeNonBlackColors(imageData) {
 function completeWithBlack(imageData) {
     const data = imageData.data;
 
-
+    for (let i = 0; i < data.length; i += 4) {
+        const rightIdx = i + 4;
+        const underIdx = i + imageData.width * 4;
+    
+        const existsLeft = (i / 4) % imageData.width !== 0;
+        const existsRight = (i / 4 + 1) % imageData.width !== 0;
+        const existsOver = i >= imageData.width * 4;
+        const existsUnder = i <= imageData.width * 4 * (imageData.height - 1);
+    }
 }
