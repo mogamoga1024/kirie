@@ -8,7 +8,11 @@ const App = {
         };
     },
     created() {
-        // noop
+        const image = new Image();
+        image.src = "./images/3.jpg";
+        image.onload = () => {
+            this.drawImage(image);
+        };
     },
     methods: {
         onChangeInputImageFile(e) {
