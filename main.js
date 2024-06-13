@@ -30,11 +30,7 @@ const App = {
             image.onload = () => {
                 this.imageFileName = imageFile.name;
 
-                const canvas = this.$refs.canvas;
-                const context = canvas.getContext("2d");
-                canvas.width = image.width;
-                canvas.height = image.height;
-                context.drawImage(image, 0, 0);
+                this.drawImage(image);
 
                 URL.revokeObjectURL(image.src);
                 isLoadingInputImage = false;
@@ -46,6 +42,19 @@ const App = {
             };
 
             image.src = URL.createObjectURL(imageFile);
+        },
+        drawImage(image) {
+            const canvas = this.$refs.canvas;
+            const context = canvas.getContext("2d");
+            canvas.width = image.width;
+            canvas.height = image.height;
+            context.drawImage(image, 0, 0);
+
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+            medianCut(imageData, 5);
+
+            context.putImageData(imageData, 0, 0);
         },
     }
 };
