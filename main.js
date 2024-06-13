@@ -29,10 +29,19 @@ const App = {
             const image = new Image();
             image.onload = () => {
                 this.imageFileName = imageFile.name;
+
+                const canvas = this.$refs.canvas;
+                const context = canvas.getContext("2d");
+                canvas.width = image.width;
+                canvas.height = image.height;
+                context.drawImage(image, 0, 0);
+
+                URL.revokeObjectURL(image.src);
                 isLoadingInputImage = false;
             };
             image.onerror = () => {
                 alert("画像の読み込みに失敗しました。");
+                URL.revokeObjectURL(image.src);
                 isLoadingInputImage = false;
             };
 
