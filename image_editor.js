@@ -159,6 +159,9 @@ function colorDistance(data, oriIdx, dstIdx) {
         Math.pow((data[oriIdx + 1] - data[dstIdx + 1]), 2) +
         Math.pow((data[oriIdx + 2] - data[dstIdx + 2]), 2)
     );
+    // return Math.abs(data[oriIdx] - data[dstIdx]) +
+    //        Math.abs(data[oriIdx + 1] - data[dstIdx + 1]) +
+    //        Math.abs(data[oriIdx + 2] - data[dstIdx + 2]);
 };
 
 function removeNonBlackColors(imageData) {
