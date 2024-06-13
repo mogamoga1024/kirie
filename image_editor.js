@@ -140,6 +140,9 @@ function outline(imageData, baseColorDistance = 30) {
             continue;
         }
 
+        let didChangeRight = false;
+        let didChangeUnder = false;
+
         if (existsRight) {
             if (
                 data[rightIdx] === 0 &&
@@ -151,6 +154,7 @@ function outline(imageData, baseColorDistance = 30) {
             if (colorDistance(data, i, rightIdx) > baseColorDistance) {
                 data[i] = data[i + 1] = data[i + 2] = 0;
                 data[rightIdx] = data[rightIdx + 1] = data[rightIdx + 2] = 0;
+                didChangeRight = true;
             }
         }
         if (existsUnder) {
@@ -164,7 +168,11 @@ function outline(imageData, baseColorDistance = 30) {
             if (colorDistance(data, i, underIdx) > baseColorDistance) {
                 data[i] = data[i + 1] = data[i + 2] = 0;
                 data[underIdx] = data[underIdx + 1] = data[underIdx + 2] = 0;
+                didChangeUnder = true;
             }
+        }
+        if (existsRight && existsUnder && didChangeRight && didChangeUnder) {
+            data[underIdx + 4] = data[underIdx + 5] = data[underIdx + 6] = 0;
         }
     }
 };
@@ -206,5 +214,5 @@ function removeNonBlackColors(imageData) {
 function completeWithBlack(imageData) {
     const data = imageData.data;
 
-    
+
 }
