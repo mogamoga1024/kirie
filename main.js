@@ -52,7 +52,7 @@ const App = {
 
             const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
-            medianCut(imageData, 5);
+            medianCut(imageData, 128);
 
             context.putImageData(imageData, 0, 0);
         },
