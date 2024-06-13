@@ -48,19 +48,21 @@ const App = {
             image.src = URL.createObjectURL(imageFile);
         },
         drawImage(image, mcMaxColorCount = 128, baseColorDistance = 30) {
-            const canvas = this.$refs.canvas;
-            const context = canvas.getContext("2d");
-            canvas.width = image.width;
-            canvas.height = image.height;
-            context.drawImage(image, 0, 0);
+            const sCanvas = this.$refs.srcCanvas;
+            const sContext = sCanvas.getContext("2d");
+            const dCanvas = this.$refs.dstCanvas;
+            const dContext = dCanvas.getContext("2d");
+            sCanvas.width = dCanvas.width = image.width;
+            sCanvas.height = dCanvas.height = image.height;
+            sContext.drawImage(image, 0, 0);
 
-            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            const imageData = sContext.getImageData(0, 0, image.width, image.height);
 
             // medianCut(imageData, mcMaxColorCount);
 
             outline(imageData, baseColorDistance);
 
-            context.putImageData(imageData, 0, 0);
+            dContext.putImageData(imageData, 0, 0);
         },
     }
 };
