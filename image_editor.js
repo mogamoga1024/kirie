@@ -161,4 +161,6 @@ function colorDistance(data, oriIdx, dstIdx) {
     );
 };
 
-
+function keepOnlyBlack() {
+    
+}

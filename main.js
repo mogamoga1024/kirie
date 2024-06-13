@@ -5,6 +5,8 @@ const App = {
     data() {
         return {
             imageFileName: "",
+            mcMaxColorCount: 128, // todo いらんかも
+            baseColorDistance: 30,
         };
     },
     created() {
@@ -47,7 +49,7 @@ const App = {
 
             image.src = URL.createObjectURL(imageFile);
         },
-        drawImage(image, mcMaxColorCount = 128, baseColorDistance = 30) {
+        drawImage(image) {
             const sCanvas = this.$refs.srcCanvas;
             const sContext = sCanvas.getContext("2d");
             const dCanvas = this.$refs.dstCanvas;
@@ -58,9 +60,9 @@ const App = {
 
             const imageData = sContext.getImageData(0, 0, image.width, image.height);
 
-            // medianCut(imageData, mcMaxColorCount);
+            // medianCut(imageData, this.mcMaxColorCount);
 
-            outline(imageData, baseColorDistance);
+            outline(imageData, this.baseColorDistance);
 
             dContext.putImageData(imageData, 0, 0);
         },
