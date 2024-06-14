@@ -307,6 +307,7 @@ function sobelFilter(imageData) {
     const width = imageData.width;
     const height = imageData.height;
 
+    // グレースケール変換
     for (let i = 0; i < data.length; i += 4) {
         const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
         data[i] = avg;
@@ -314,11 +315,13 @@ function sobelFilter(imageData) {
         data[i + 2] = avg;
     }
 
-    const sobelData = [];
-    const grayscaleData = [];
+    const sobelData = new Uint8ClampedArray(data.length);
+    const grayscaleData = new Uint8ClampedArray(width * height);
+    
     for (let i = 0; i < data.length; i += 4) {
-        grayscaleData.push(data[i]);
+        grayscaleData[i / 4] = data[i];
     }
+
     const kernelX = [
         [-1, 0, 1],
         [-2, 0, 2],
@@ -329,40 +332,32 @@ function sobelFilter(imageData) {
         [0, 0, 0],
         [1, 2, 1]
     ];
-    for (let y = 1; y < height; y++) {
-        for (let x = 1; x < width; x++) {
-            const pixelX = (
-                (kernelX[0][0] * grayscaleData[((y - 1) * width + (x - 1))]) +
-                (kernelX[0][1] * grayscaleData[((y - 1) * width + x)]) +
-                (kernelX[0][2] * grayscaleData[((y - 1) * width + (x + 1))]) +
-                (kernelX[1][0] * grayscaleData[(y * width + (x - 1))]) +
-                (kernelX[1][1] * grayscaleData[(y * width + x)]) +
-                (kernelX[1][2] * grayscaleData[(y * width + (x + 1))]) +
-                (kernelX[2][0] * grayscaleData[((y + 1) * width + (x - 1))]) +
-                (kernelX[2][1] * grayscaleData[((y + 1) * width + x)]) +
-                (kernelX[2][2] * grayscaleData[((y + 1) * width + (x + 1))])
-            );
 
-            const pixelY = (
-                (kernelY[0][0] * grayscaleData[((y - 1) * width + (x - 1))]) +
-                (kernelY[0][1] * grayscaleData[((y - 1) * width + x)]) +
-                (kernelY[0][2] * grayscaleData[((y - 1) * width + (x + 1))]) +
-                (kernelY[1][0] * grayscaleData[(y * width + (x - 1))]) +
-                (kernelY[1][1] * grayscaleData[(y * width + x)]) +
-                (kernelY[1][2] * grayscaleData[(y * width + (x + 1))]) +
-                (kernelY[2][0] * grayscaleData[((y + 1) * width + (x - 1))]) +
-                (kernelY[2][1] * grayscaleData[((y + 1) * width + x)]) +
-                (kernelY[2][2] * grayscaleData[((y + 1) * width + (x + 1))])
-            );
+    // エッジ検出
+    for (let y = 1; y < height - 1; y++) {
+        for (let x = 1; x < width - 1; x++) {
+            let pixelX = 0;
+            let pixelY = 0;
 
-            const magnitude = Math.sqrt((pixelX * pixelX) + (pixelY * pixelY))>>>0;
-            sobelData.push(magnitude, magnitude, magnitude, 255);
+            for (let ky = -1; ky <= 1; ky++) {
+                for (let kx = -1; kx <= 1; kx++) {
+                    const val = grayscaleData[(y + ky) * width + (x + kx)];
+                    pixelX += val * kernelX[ky + 1][kx + 1];
+                    pixelY += val * kernelY[ky + 1][kx + 1];
+                }
+            }
+
+            const magnitude = Math.sqrt(pixelX * pixelX + pixelY * pixelY) >>> 0;
+            const index = (y * width + x) * 4;
+            sobelData[index] = magnitude;
+            sobelData[index + 1] = magnitude;
+            sobelData[index + 2] = magnitude;
+            sobelData[index + 3] = 255;
         }
     }
-    
-    for (let i = 0; i < data.length; i += 4) {
+
+    for (let i = 0; i < data.length; i++) {
         data[i] = sobelData[i];
-        data[i + 1] = sobelData[i + 1];
-        data[i + 2] = sobelData[i + 2];
     }
 }
+
