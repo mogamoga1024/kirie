@@ -3,6 +3,10 @@
   display: none !important;
 }
 
+:root {
+  font-size: 16px;
+}
+
 .btn {
   display: inline-block;
   height: 25px;
