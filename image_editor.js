@@ -356,8 +356,10 @@ function sobelFilter(imageData) {
         }
     }
 
-    for (let i = 0; i < data.length; i++) {
-        data[i] = sobelData[i];
+    for (let i = 0; i < data.length; i += 4) {
+        data[i] = 255 - sobelData[i];
+        data[i + 1] = 255 - sobelData[i];
+        data[i + 2] = 255 - sobelData[i];
     }
 }
 
