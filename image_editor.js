@@ -281,14 +281,14 @@ function medianFilter(imageData) {
 //     }
 // }
 
-function monochrome(imageData) {
+function monochrome(imageData, baseAverageColor = 110) {
     const data = imageData.data;
     for (let i = 0; i < data.length; i += 4) {
         const r = data[i];
         const g = data[i + 1];
         const b = data[i + 2];
         const value = 0.21 * r + 0.72 * g + 0.07 * b;
-        if (value <= 100) {
+        if (value <= baseAverageColor) {
             data[i]     = 0;
             data[i + 1] = 0;
             data[i + 2] = 0;

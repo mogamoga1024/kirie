@@ -5,8 +5,9 @@ const App = {
     data() {
         return {
             imageFileName: "",
-            mcMaxColorCount: 128, // todo いらんかも
+            // mcMaxColorCount: 128, // todo いらんかも
             baseColorDistance: 30,
+            baseAverageColor: 100,
         };
     },
     created() {
@@ -75,7 +76,7 @@ const App = {
 
             const imageData2 = sContext.getImageData(0, 0, image.width, image.height);
 
-            monochrome(imageData2);
+            monochrome(imageData2, this.baseAverageColor);
 
             const tmpCanvas = new OffscreenCanvas(image.width, image.height);
             const tmpContext = tmpCanvas.getContext("2d");
