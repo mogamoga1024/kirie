@@ -267,3 +267,16 @@ function medianFilter(imageData) {
         }
     }
 }
+
+function grayScale(imageData) {
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+        const red   = data[i];
+        const green = data[i + 1];
+        const blue  = data[i + 2];
+        const grayscaleValue = 0.21 * red + 0.72 * green + 0.07 * blue;
+        data[i]     = grayscaleValue;
+        data[i + 1] = grayscaleValue;
+        data[i + 2] = grayscaleValue;
+    }
+}
