@@ -57,11 +57,15 @@ const App = {
         },
 
         onChangeBaseAverageColor(e) {
-            // todo
+            if (this.image !== null) {
+                this.drawImage();
+            }
         },
 
         onChangeBaseColorDistance(e) {
-            // todo
+            if (this.image !== null) {
+                this.drawImage();
+            }
         },
 
         drawImage() {
