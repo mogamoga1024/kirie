@@ -268,15 +268,36 @@ function medianFilter(imageData) {
     }
 }
 
-function grayScale(imageData) {
+// function grayScale(imageData) {
+//     const data = imageData.data;
+//     for (let i = 0; i < data.length; i += 4) {
+//         const red   = data[i];
+//         const green = data[i + 1];
+//         const blue  = data[i + 2];
+//         const grayscaleValue = 0.21 * red + 0.72 * green + 0.07 * blue;
+//         data[i]     = grayscaleValue;
+//         data[i + 1] = grayscaleValue;
+//         data[i + 2] = grayscaleValue;
+//     }
+// }
+
+function monochrome(imageData) {
     const data = imageData.data;
     for (let i = 0; i < data.length; i += 4) {
-        const red   = data[i];
-        const green = data[i + 1];
-        const blue  = data[i + 2];
-        const grayscaleValue = 0.21 * red + 0.72 * green + 0.07 * blue;
-        data[i]     = grayscaleValue;
-        data[i + 1] = grayscaleValue;
-        data[i + 2] = grayscaleValue;
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const value = 0.21 * r + 0.72 * g + 0.07 * b;
+        if (value <= 100) {
+            data[i]     = 0;
+            data[i + 1] = 0;
+            data[i + 2] = 0;
+        }
+        else {
+            data[i]     = 255;
+            data[i + 1] = 255;
+            data[i + 2] = 255;
+            data[i + 3] = 0;
+        }
     }
 }

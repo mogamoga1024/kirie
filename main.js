@@ -75,7 +75,7 @@ const App = {
 
             const imageData2 = sContext.getImageData(0, 0, image.width, image.height);
 
-            grayScale(imageData2);
+            monochrome(imageData2);
 
             const tmpCanvas = new OffscreenCanvas(image.width, image.height);
             const tmpContext = tmpCanvas.getContext("2d");
