@@ -2,6 +2,9 @@
 let isLoadingInputImage = false;
 
 const App = {
+    components: {
+        PlusMinusInputNumbur
+    },
     data() {
         return {
             imageFileName: "",

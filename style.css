@@ -4,13 +4,17 @@
 }
 
 :root {
-  font-size: 16px;
+  font-size: 18px;
+}
+
+button, input, select, textarea {
+  font-size: 18px;
 }
 
 .btn {
   display: inline-block;
   height: 25px;
-  line-height: 25px;
+  /* line-height: 25px; */
   padding: 4px 8px;
   border-radius: 5px;
   border: 2px solid #007BAE;
@@ -70,3 +74,27 @@ canvas {
   border: 1px solid black;
 }
 
+#setting {
+  margin-top: 16px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.item .name {
+  width: 100px;
+  text-align: center;
+
+  .hosoku {
+    font-size: 0.7em;
+  }
+}
+
+.item .input {
+  display: flex;
+  width: 150px;
+  justify-content: center;
+}

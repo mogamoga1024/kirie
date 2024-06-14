@@ -11,6 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@3.4.21/dist/vue.global.min.js"></script>
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="plus_minus_input_number.css">
 </head>
 <body>
   <h1>画像から切り絵を生成するWebツール</h1>
@@ -28,12 +29,36 @@
       <canvas ref="srcCanvas"></canvas>
     </div>
 
+    <div id="setting">
+      <div class="item">
+        <div class="name">黒閾値</div>
+        <div class="input">
+          <plus-minus-input-numbur
+            :min="0"
+            :max="255"
+            v-model="baseAverageColor"
+            @change="">
+        </div>
+      </div>
+      <div class="item">
+        <div class="name">輪郭閾値</div>
+        <div class="input">
+          <plus-minus-input-numbur
+            :min="0"
+            :max="200"
+            v-model="baseColorDistance"
+            @change="">
+        </div>
+      </div>
+    </div>
+
     <div class="canvas-container">
       <div id="dst-title">加工画像</div>
       <canvas ref="dstCanvas"></canvas>
     </div>
   </div>
 
+  <script src="/components/plus_minus_input_numbur.js"></script>
   <script src="image_editor.js"></script>
   <script src="main.js"></script>
 </body>
