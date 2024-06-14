@@ -8,16 +8,17 @@ const App = {
     data() {
         return {
             imageFileName: "",
+            image: null,
             // mcMaxColorCount: 128, // todo いらんかも
             baseColorDistance: 30,
             baseAverageColor: 100,
         };
     },
     created() {
-        const image = new Image();
-        image.src = "./images/3.jpg";
-        image.onload = () => {
-            this.drawImage(image);
+        this.image = new Image();
+        this.image.src = "./images/3.jpg";
+        this.image.onload = () => {
+            this.drawImage();
         };
     },
     methods: {
@@ -36,34 +37,44 @@ const App = {
                 return;
             }
 
-            const image = new Image();
-            image.onload = () => {
+            this.image = new Image();
+            this.image.onload = () => {
                 this.imageFileName = imageFile.name;
 
-                this.drawImage(image);
+                this.drawImage();
 
-                URL.revokeObjectURL(image.src);
+                URL.revokeObjectURL(this.image.src);
                 isLoadingInputImage = false;
             };
-            image.onerror = () => {
+            this.image.onerror = () => {
                 alert("画像の読み込みに失敗しました。");
-                URL.revokeObjectURL(image.src);
+                URL.revokeObjectURL(this.image.src);
+                this.image = null;
                 isLoadingInputImage = false;
             };
 
-            image.src = URL.createObjectURL(imageFile);
+            this.image.src = URL.createObjectURL(imageFile);
         },
-        drawImage(image) {
+
+        onChangeBaseAverageColor(e) {
+            // todo
+        },
+
+        onChangeBaseColorDistance(e) {
+            // todo
+        },
+
+        drawImage() {
             const sCanvas = this.$refs.srcCanvas;
-            const sContext = sCanvas.getContext("2d");
+            const sContext = sCanvas.getContext("2d", { willReadFrequently: true });
             const dCanvas = this.$refs.dstCanvas;
             const dContext = dCanvas.getContext("2d");
-            sCanvas.style.maxWidth = dCanvas.style.maxWidth = `${image.width}px`;
-            sCanvas.width = dCanvas.width = image.width;
-            sCanvas.height = dCanvas.height = image.height;
-            sContext.drawImage(image, 0, 0);
+            sCanvas.style.maxWidth = dCanvas.style.maxWidth = `${this.image.width}px`;
+            sCanvas.width = dCanvas.width = this.image.width;
+            sCanvas.height = dCanvas.height = this.image.height;
+            sContext.drawImage(this.image, 0, 0);
 
-            const imageData1 = sContext.getImageData(0, 0, image.width, image.height);
+            const imageData1 = sContext.getImageData(0, 0, this.image.width, this.image.height);
 
             // medianCut(imageData, this.mcMaxColorCount);
 
@@ -77,11 +88,11 @@ const App = {
 
             dContext.putImageData(imageData1, 0, 0);
 
-            const imageData2 = sContext.getImageData(0, 0, image.width, image.height);
+            const imageData2 = sContext.getImageData(0, 0, this.image.width, this.image.height);
 
             monochrome(imageData2, this.baseAverageColor);
 
-            const tmpCanvas = new OffscreenCanvas(image.width, image.height);
+            const tmpCanvas = new OffscreenCanvas(this.image.width, this.image.height);
             const tmpContext = tmpCanvas.getContext("2d");
             tmpContext.putImageData(imageData2, 0, 0);
 

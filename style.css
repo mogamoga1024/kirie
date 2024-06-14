@@ -75,7 +75,10 @@ canvas {
 }
 
 #setting {
+  display: flex;
   margin-top: 16px;
+  flex-direction: column;
+  row-gap: 8px;
 }
 
 .item {

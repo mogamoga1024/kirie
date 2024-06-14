@@ -31,23 +31,29 @@
 
     <div id="setting">
       <div class="item">
-        <div class="name">黒閾値</div>
+        <div class="name">
+          <div>黒閾値</div>
+          <div class="hosoku">多:0-255:少</div>
+        </div>
         <div class="input">
           <plus-minus-input-numbur
             :min="0"
             :max="255"
             v-model="baseAverageColor"
-            @change="">
+            @change="onChangeBaseAverageColor">
         </div>
       </div>
       <div class="item">
-        <div class="name">輪郭閾値</div>
+        <div class="name">
+          <div>輪郭閾値</div>
+          <div class="hosoku">強:0-200:弱</div>
+        </div>
         <div class="input">
           <plus-minus-input-numbur
             :min="0"
             :max="200"
             v-model="baseColorDistance"
-            @change="">
+            @change="onChangeBaseColorDistance">
         </div>
       </div>
     </div>
