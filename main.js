@@ -10,7 +10,7 @@ const App = {
             imageFileName: "",
             image: null,
             // mcMaxColorCount: 128, // todo いらんかも
-            baseColorDistance: 30,
+            // baseColorDistance: 30,
             baseAverageColor: 100,
         };
     },
@@ -78,27 +78,34 @@ const App = {
             sCanvas.height = dCanvas.height = this.image.height;
             sContext.drawImage(this.image, 0, 0);
 
+            // 輪郭抽出
+
             const imageData1 = sContext.getImageData(0, 0, this.image.width, this.image.height);
 
             // outline(imageData1, this.baseColorDistance);
+            sobelFilter(imageData1);
 
             // removeNonBlackColors(imageData1);
 
-            // medianFilter(imageData1);
+            monochrome(imageData1, this.baseAverageColor);
 
-            sobelFilter(imageData1);
+            // medianFilter(imageData1);
 
             dContext.putImageData(imageData1, 0, 0);
 
-            // const imageData2 = sContext.getImageData(0, 0, this.image.width, this.image.height);
+            // 元絵全体のモノクロ
 
-            // monochrome(imageData2, this.baseAverageColor);
+            const imageData2 = sContext.getImageData(0, 0, this.image.width, this.image.height);
 
-            // const tmpCanvas = new OffscreenCanvas(this.image.width, this.image.height);
-            // const tmpContext = tmpCanvas.getContext("2d");
-            // tmpContext.putImageData(imageData2, 0, 0);
+            monochrome(imageData2, this.baseAverageColor);
 
-            // dContext.drawImage(tmpCanvas, 0, 0);
+            // medianFilter(imageData2);
+
+            const tmpCanvas = new OffscreenCanvas(this.image.width, this.image.height);
+            const tmpContext = tmpCanvas.getContext("2d");
+            tmpContext.putImageData(imageData2, 0, 0);
+
+            dContext.drawImage(tmpCanvas, 0, 0);
         },
     }
 };
