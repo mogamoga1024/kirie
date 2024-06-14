@@ -301,3 +301,68 @@ function monochrome(imageData, baseAverageColor = 110) {
         }
     }
 }
+
+function sobelFilter(imageData) {
+    const data = imageData.data;
+    const width = imageData.width;
+    const height = imageData.height;
+
+    for (let i = 0; i < data.length; i += 4) {
+        const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        data[i] = avg;
+        data[i + 1] = avg;
+        data[i + 2] = avg;
+    }
+
+    const sobelData = [];
+    const grayscaleData = [];
+    for (let i = 0; i < data.length; i += 4) {
+        grayscaleData.push(data[i]);
+    }
+    const kernelX = [
+        [-1, 0, 1],
+        [-2, 0, 2],
+        [-1, 0, 1]
+    ];
+    const kernelY = [
+        [-1, -2, -1],
+        [0, 0, 0],
+        [1, 2, 1]
+    ];
+    for (let y = 1; y < height; y++) {
+        for (let x = 1; x < width; x++) {
+            const pixelX = (
+                (kernelX[0][0] * grayscaleData[((y - 1) * width + (x - 1))]) +
+                (kernelX[0][1] * grayscaleData[((y - 1) * width + x)]) +
+                (kernelX[0][2] * grayscaleData[((y - 1) * width + (x + 1))]) +
+                (kernelX[1][0] * grayscaleData[(y * width + (x - 1))]) +
+                (kernelX[1][1] * grayscaleData[(y * width + x)]) +
+                (kernelX[1][2] * grayscaleData[(y * width + (x + 1))]) +
+                (kernelX[2][0] * grayscaleData[((y + 1) * width + (x - 1))]) +
+                (kernelX[2][1] * grayscaleData[((y + 1) * width + x)]) +
+                (kernelX[2][2] * grayscaleData[((y + 1) * width + (x + 1))])
+            );
+
+            const pixelY = (
+                (kernelY[0][0] * grayscaleData[((y - 1) * width + (x - 1))]) +
+                (kernelY[0][1] * grayscaleData[((y - 1) * width + x)]) +
+                (kernelY[0][2] * grayscaleData[((y - 1) * width + (x + 1))]) +
+                (kernelY[1][0] * grayscaleData[(y * width + (x - 1))]) +
+                (kernelY[1][1] * grayscaleData[(y * width + x)]) +
+                (kernelY[1][2] * grayscaleData[(y * width + (x + 1))]) +
+                (kernelY[2][0] * grayscaleData[((y + 1) * width + (x - 1))]) +
+                (kernelY[2][1] * grayscaleData[((y + 1) * width + x)]) +
+                (kernelY[2][2] * grayscaleData[((y + 1) * width + (x + 1))])
+            );
+
+            const magnitude = Math.sqrt((pixelX * pixelX) + (pixelY * pixelY))>>>0;
+            sobelData.push(magnitude, magnitude, magnitude, 255);
+        }
+    }
+    
+    for (let i = 0; i < data.length; i += 4) {
+        data[i] = sobelData[i];
+        data[i + 1] = sobelData[i + 1];
+        data[i + 2] = sobelData[i + 2];
+    }
+}

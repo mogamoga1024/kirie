@@ -80,27 +80,25 @@ const App = {
 
             const imageData1 = sContext.getImageData(0, 0, this.image.width, this.image.height);
 
-            // medianCut(imageData, this.mcMaxColorCount);
+            // outline(imageData1, this.baseColorDistance);
 
-            outline(imageData1, this.baseColorDistance);
+            // removeNonBlackColors(imageData1);
 
-            removeNonBlackColors(imageData1);
+            // medianFilter(imageData1);
 
-            // completeWithBlack(imageData);
-
-            medianFilter(imageData1);
+            sobelFilter(imageData1);
 
             dContext.putImageData(imageData1, 0, 0);
 
-            const imageData2 = sContext.getImageData(0, 0, this.image.width, this.image.height);
+            // const imageData2 = sContext.getImageData(0, 0, this.image.width, this.image.height);
 
-            monochrome(imageData2, this.baseAverageColor);
+            // monochrome(imageData2, this.baseAverageColor);
 
-            const tmpCanvas = new OffscreenCanvas(this.image.width, this.image.height);
-            const tmpContext = tmpCanvas.getContext("2d");
-            tmpContext.putImageData(imageData2, 0, 0);
+            // const tmpCanvas = new OffscreenCanvas(this.image.width, this.image.height);
+            // const tmpContext = tmpCanvas.getContext("2d");
+            // tmpContext.putImageData(imageData2, 0, 0);
 
-            dContext.drawImage(tmpCanvas, 0, 0);
+            // dContext.drawImage(tmpCanvas, 0, 0);
         },
     }
 };
