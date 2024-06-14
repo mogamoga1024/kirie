@@ -54,6 +54,7 @@ const App = {
             const sContext = sCanvas.getContext("2d");
             const dCanvas = this.$refs.dstCanvas;
             const dContext = dCanvas.getContext("2d");
+            sCanvas.style.maxWidth = dCanvas.style.maxWidth = `${image.width}px`;
             sCanvas.width = dCanvas.width = image.width;
             sCanvas.height = dCanvas.height = image.height;
             sContext.drawImage(image, 0, 0);
@@ -66,7 +67,7 @@ const App = {
 
             removeNonBlackColors(imageData);
 
-            completeWithBlack(imageData);
+            // completeWithBlack(imageData);
 
             medianFilter(imageData);
 
