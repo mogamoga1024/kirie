@@ -23,8 +23,15 @@
       <div class="file-name">{{imageFileName}}</div>
     </div>
 
-    <canvas ref="srcCanvas"></canvas>
-    <canvas ref="dstCanvas"></canvas>
+    <div class="canvas-container">
+      <div id="src-title">無加工画像</div>
+      <canvas ref="srcCanvas"></canvas>
+    </div>
+
+    <div class="canvas-container">
+      <div id="dst-title">加工画像</div>
+      <canvas ref="dstCanvas"></canvas>
+    </div>
   </div>
 
   <script src="image_editor.js"></script>

@@ -52,10 +52,17 @@
   word-break: break-all;
 }
 
+.canvas-container {
+  margin-top: 16px;
+}
+
+#src-title, #dst-title {
+  font-weight: bold;
+}
+
 canvas {
   display: block;
   width: 100%;
-  margin-top: 16px;
   border: 1px solid black;
 }
 
