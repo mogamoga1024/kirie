@@ -31,6 +31,17 @@
 
     <div id="setting">
       <div class="item">
+        <div class="name">幅</div>
+        <div class="input">
+          <plus-minus-input-numbur
+            :min="imageWidthMin"
+            :max="imageWidthMax"
+            v-model="imageWidth"
+            @change="onChangeImageWidth">
+        </div>
+      </div>
+
+      <div class="item">
         <div class="name">
           <div>黒閾値</div>
           <div class="hosoku">少:0-255:多</div>
@@ -43,19 +54,6 @@
             @change="onChangeBaseAverageColor">
         </div>
       </div>
-      <!-- <div class="item">
-        <div class="name">
-          <div>輪郭閾値</div>
-          <div class="hosoku">強:0-200:弱</div>
-        </div>
-        <div class="input">
-          <plus-minus-input-numbur
-            :min="0"
-            :max="200"
-            v-model="baseColorDistance"
-            @change="onChangeBaseColorDistance">
-        </div>
-      </div> -->
     </div>
 
     <div class="canvas-container">

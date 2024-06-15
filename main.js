@@ -9,8 +9,9 @@ const App = {
         return {
             imageFileName: "",
             image: null,
-            // mcMaxColorCount: 128, // todo いらんかも
-            // baseColorDistance: 30,
+            imageWidth: 0,
+            imageWidthMin: 10,
+            imageWidthMax: 5000,
             baseAverageColor: 100,
         };
     },
@@ -18,6 +19,8 @@ const App = {
         this.image = new Image();
         this.image.src = "./images/3.jpg";
         this.image.onload = () => {
+            this.imageFileName = "test";
+            this.imageWidth = this.image.width;
             this.drawImage();
         };
     },
@@ -39,7 +42,19 @@ const App = {
 
             this.image = new Image();
             this.image.onload = () => {
+                if (this.image.width < this.imageWidthMin || this.image.width > this.imageWidthMax) {
+                    alert(`画像の幅は${this.imageWidthMin}px以上${this.imageWidthMax}px以下の必要があります。`);
+                    if (this.imageFileName === "") {
+                        this.$refs.inputImageFile.value = "";
+                        this.image = null;
+                        this.imageWidth = 0;
+                    }
+                    
+                    return;
+                }
+
                 this.imageFileName = imageFile.name;
+                this.imageWidth = this.image.width;
 
                 this.drawImage();
 
@@ -56,13 +71,13 @@ const App = {
             this.image.src = URL.createObjectURL(imageFile);
         },
 
-        onChangeBaseAverageColor(e) {
+        onChangeImageWidth() {
             if (this.image !== null) {
                 this.drawImage();
             }
         },
 
-        onChangeBaseColorDistance(e) {
+        onChangeBaseAverageColor() {
             if (this.image !== null) {
                 this.drawImage();
             }
@@ -82,7 +97,6 @@ const App = {
 
             const imageData1 = sContext.getImageData(0, 0, this.image.width, this.image.height);
 
-            // outline(imageData1, this.baseColorDistance);
             sobelFilter(imageData1);
 
             // removeNonBlackColors(imageData1);
