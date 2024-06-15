@@ -88,14 +88,16 @@ const App = {
             const sContext = sCanvas.getContext("2d", { willReadFrequently: true });
             const dCanvas = this.$refs.dstCanvas;
             const dContext = dCanvas.getContext("2d");
-            sCanvas.style.maxWidth = dCanvas.style.maxWidth = `${this.image.width}px`;
-            sCanvas.width = dCanvas.width = this.image.width;
-            sCanvas.height = dCanvas.height = this.image.height;
-            sContext.drawImage(this.image, 0, 0);
+            const imageWidth = this.imageWidth;
+            const imageHeight = this.image.height * this.imageWidth / this.image.width;
+            sCanvas.style.maxWidth = dCanvas.style.maxWidth = `${imageWidth}px`;
+            sCanvas.width = dCanvas.width = imageWidth;
+            sCanvas.height = dCanvas.height = imageHeight;
+            sContext.drawImage(this.image, 0, 0, imageWidth, imageHeight);
 
             // 輪郭抽出
 
-            const imageData1 = sContext.getImageData(0, 0, this.image.width, this.image.height);
+            const imageData1 = sContext.getImageData(0, 0, imageWidth, imageHeight);
 
             sobelFilter(imageData1);
 
@@ -109,13 +111,13 @@ const App = {
 
             // 元絵全体のモノクロ
 
-            const imageData2 = sContext.getImageData(0, 0, this.image.width, this.image.height);
+            const imageData2 = sContext.getImageData(0, 0, imageWidth, imageHeight);
 
             monochrome(imageData2, this.baseAverageColor);
 
             // medianFilter(imageData2);
 
-            const tmpCanvas = new OffscreenCanvas(this.image.width, this.image.height);
+            const tmpCanvas = new OffscreenCanvas(imageWidth, imageHeight);
             const tmpContext = tmpCanvas.getContext("2d");
             tmpContext.putImageData(imageData2, 0, 0);
 
