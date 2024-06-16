@@ -366,7 +366,21 @@ function sobelFilter(imageData) {
 }
 
 function convertToSVG(imageData) {
-    // todo
-    alert("未実装");
+    const options = {
+        // ltres: 1,
+        // qtres: 1,
+        pathomit: 17,
+        colorsampling: 0,
+        numberofcolors: 4,
+        blurradius: 5,
+        // blurdelta: 20,
+        colorquantcycles: 5,
+        // linefilter: true,
+        // strokewidth: 1,
+        // layering: 0,
+        // pal: [{r:0,g:0,b:0,a:255}, {r:0,g:0,b:255,a:255}, {r:255,g:255,b:0,a:255}]
+    };
+
+    
 }
 
