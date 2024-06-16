@@ -151,6 +151,8 @@ const App = {
 
             const v = canvg.Canvg.fromString(dContext, strSvg);
             v.render();
+            this.$refs.dstCanvas.style.width = "";
+            this.$refs.dstCanvas.style.height = "";
         },
     }
 };
