@@ -110,9 +110,7 @@ const App = {
             // 輪郭抽出
 
             const imageData1 = sContext.getImageData(0, 0, imageWidth, imageHeight);
-
             sobelFilter(imageData1);
-
             monochrome(imageData1, this.baseAverageColor);
 
             dContext.putImageData(imageData1, 0, 0);
@@ -120,7 +118,6 @@ const App = {
             // 元絵全体のモノクロ
 
             const imageData2 = sContext.getImageData(0, 0, imageWidth, imageHeight);
-
             monochrome(imageData2, this.baseAverageColor, true);
 
             const tmpCanvas = new OffscreenCanvas(imageWidth, imageHeight);
@@ -135,7 +132,6 @@ const App = {
             const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
 
             const imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
-
             medianFilter(imageData);
 
             dContext.putImageData(imageData, 0, 0);
@@ -145,14 +141,18 @@ const App = {
             const dCanvas = this.$refs.dstCanvas;
             const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
 
-            const imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
-
+            let imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
             const strSvg = convertToSVG(imageData);
 
             const v = canvg.Canvg.fromString(dContext, strSvg);
             v.render();
             this.$refs.dstCanvas.style.width = "";
             this.$refs.dstCanvas.style.height = "";
+
+            imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
+            monochrome(imageData, this.baseAverageColor);
+
+            dContext.putImageData(imageData, 0, 0);
         },
     }
 };
