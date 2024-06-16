@@ -27,13 +27,26 @@ button, input, select, textarea {
   text-align: center;
 }
 
+.btn.selected, .radio.selected {
+  color: white;
+  border-color: #007BAE;
+  background-color: #007BAE;
+}
+
 @media (any-hover: hover) {
   .btn {
     transition: background-color 0.2s;
   }
+  .btn.selected {
+    transition: background-color 0.2s, opacity 0.2s;
+  }
 
   .btn:hover {
     background-color: lightcyan;
+  }
+  .btn.selected:hover {
+    background-color: #007BAE;
+    opacity: 0.7;
   }
 }
 
@@ -100,4 +113,9 @@ canvas {
   display: flex;
   width: 150px;
   justify-content: center;
+}
+
+.input-check-area {
+  display: flex;
+  column-gap: 8px;
 }

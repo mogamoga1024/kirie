@@ -83,11 +83,17 @@ const App = {
             }
         },
 
+        onClickRemoveNoise() {
+            if (this.image !== null) {
+                this.removeNoise();
+            }
+        },
+
         drawImage() {
             const sCanvas = this.$refs.srcCanvas;
             const sContext = sCanvas.getContext("2d", { willReadFrequently: true });
             const dCanvas = this.$refs.dstCanvas;
-            const dContext = dCanvas.getContext("2d");
+            const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
             const imageWidth = this.imageWidth;
             const imageHeight = this.image.height * this.imageWidth / this.image.width;
             sCanvas.style.maxWidth = dCanvas.style.maxWidth = `${imageWidth}px`;
@@ -122,6 +128,17 @@ const App = {
             tmpContext.putImageData(imageData2, 0, 0);
 
             dContext.drawImage(tmpCanvas, 0, 0);
+        },
+
+        removeNoise() {
+            const dCanvas = this.$refs.dstCanvas;
+            const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
+
+            const imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
+
+            medianFilter(imageData);
+
+            dContext.putImageData(imageData, 0, 0);
         },
     }
 };
