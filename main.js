@@ -89,6 +89,12 @@ const App = {
             }
         },
 
+        onClickConvertToSVG() {
+            if (this.image !== null) {
+                this.convertToSVG();
+            }
+        },
+
         drawImage() {
             const sCanvas = this.$refs.srcCanvas;
             const sContext = sCanvas.getContext("2d", { willReadFrequently: true });
@@ -133,6 +139,10 @@ const App = {
             medianFilter(imageData);
 
             dContext.putImageData(imageData, 0, 0);
+        },
+
+        convertToSVG() {
+            convertToSVG();
         },
     }
 };

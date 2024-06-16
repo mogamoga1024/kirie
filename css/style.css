@@ -51,7 +51,9 @@ button, input, select, textarea {
 }
 
 #action-btn-container {
+  display: flex;
   margin-top: 24px;
+  gap: 4px 8px;
 }
 
 .action-btn {
