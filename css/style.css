@@ -50,6 +50,27 @@ button, input, select, textarea {
   }
 }
 
+#action-btn-container {
+  margin-top: 24px;
+}
+
+.action-btn {
+  border: 2px solid green;
+  color: green;
+}
+
+@media (any-hover: hover) {
+  .action-btn:hover {
+    background-color: palegreen;
+  }
+}
+@media (any-hover: none) {
+  .action-btn:active {
+    background-color: palegreen;
+    transform: scale(0.9);
+  }
+}
+
 .input-file input[type="file"] {
   display: none;
 }
@@ -89,7 +110,7 @@ canvas {
 
 #setting {
   display: flex;
-  margin-top: 16px;
+  margin-top: 24px;
   flex-direction: column;
   row-gap: 8px;
 }
