@@ -115,7 +115,7 @@ const App = {
 
             const imageData2 = sContext.getImageData(0, 0, imageWidth, imageHeight);
 
-            monochrome(imageData2, this.baseAverageColor);
+            monochrome(imageData2, this.baseAverageColor, true);
 
             const tmpCanvas = new OffscreenCanvas(imageWidth, imageHeight);
             const tmpContext = tmpCanvas.getContext("2d");
