@@ -288,18 +288,23 @@ function monochrome(imageData, baseAverageColor = 110, needTransparent = false) 
         const g = data[i + 1];
         const b = data[i + 2];
         const value = 0.21 * r + 0.72 * g + 0.07 * b;
-        if (value <= baseAverageColor) {
+        if (!needTransparent && data[i + 3] === 0) {
+            data[i]     = 255;
+            data[i + 1] = 255;
+            data[i + 2] = 255;
+            data[i + 3] = 255;
+        }
+        else if (value <= baseAverageColor) {
             data[i]     = 0;
             data[i + 1] = 0;
             data[i + 2] = 0;
+            data[i + 3] = needTransparent ? 0 : 255;
         }
         else {
             data[i]     = 255;
             data[i + 1] = 255;
             data[i + 2] = 255;
-            if (needTransparent) {
-                data[i + 3] = 0;
-            }
+            data[i + 3] = needTransparent ? 0 : 255;
         }
     }
 }
