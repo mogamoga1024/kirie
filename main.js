@@ -95,6 +95,12 @@ const App = {
             }
         },
 
+        onClickReset() {
+            if (this.image !== null) {
+                this.drawImage();
+            }
+        },
+
         drawImage() {
             const sCanvas = this.$refs.srcCanvas;
             const sContext = sCanvas.getContext("2d", { willReadFrequently: true });
