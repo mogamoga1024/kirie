@@ -142,7 +142,12 @@ const App = {
         },
 
         convertToSVG() {
-            convertToSVG();
+            const dCanvas = this.$refs.dstCanvas;
+            const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
+
+            const imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
+
+            convertToSVG(imageData);
         },
     }
 };
