@@ -107,11 +107,7 @@ const App = {
 
             sobelFilter(imageData1);
 
-            // removeNonBlackColors(imageData1);
-
             monochrome(imageData1, this.baseAverageColor);
-
-            // medianFilter(imageData1);
 
             dContext.putImageData(imageData1, 0, 0);
 
@@ -120,8 +116,6 @@ const App = {
             const imageData2 = sContext.getImageData(0, 0, imageWidth, imageHeight);
 
             monochrome(imageData2, this.baseAverageColor);
-
-            // medianFilter(imageData2);
 
             const tmpCanvas = new OffscreenCanvas(imageWidth, imageHeight);
             const tmpContext = tmpCanvas.getContext("2d");
