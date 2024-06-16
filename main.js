@@ -147,7 +147,10 @@ const App = {
 
             const imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
 
-            convertToSVG(imageData);
+            const strSvg = convertToSVG(imageData);
+
+            const v = canvg.Canvg.fromString(dContext, strSvg);
+            v.render();
         },
     }
 };

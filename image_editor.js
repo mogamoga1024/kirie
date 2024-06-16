@@ -381,8 +381,6 @@ function convertToSVG(imageData) {
         // pal: [{r:0,g:0,b:0,a:255}, {r:0,g:0,b:255,a:255}, {r:255,g:255,b:0,a:255}]
     };
 
-    const strSvg = ImageTracer.imagedataToSVG(imageData, options);
-
-    ImageTracer.appendSVGString(strSvg, "svg-container");
+    return ImageTracer.imagedataToSVG(imageData, options);
 }
 
