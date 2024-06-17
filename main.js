@@ -165,7 +165,7 @@ const App = {
             this.$refs.dstCanvas.style.height = "";
 
             imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
-            monochrome(imageData, this.baseAverageColor);
+            monochrome(imageData, 128);
 
             dContext.putImageData(imageData, 0, 0);
         },
