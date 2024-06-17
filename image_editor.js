@@ -253,17 +253,29 @@ function medianFilter(imageData) {
     const copy = new Uint8ClampedArray(data);
     for (let y = 1; y < height - 1; y++) {
         for (let x = 1; x < width - 1; x++) {
-            for (let c = 0; c < 3; c++) {
-                const pixels = [];
-                for (let dy = -1; dy <= 1; dy++) {
-                    for (let dx = -1; dx <= 1; dx++) {
-                        const index = ((y + dy) * width + (x + dx)) * 4 + c;
-                        pixels.push(copy[index]);
-                    }
+            // for (let c = 0; c < 3; c++) {
+            //     const pixels = [];
+            //     for (let dy = -1; dy <= 1; dy++) {
+            //         for (let dx = -1; dx <= 1; dx++) {
+            //             const index = ((y + dy) * width + (x + dx)) * 4 + c;
+            //             pixels.push(copy[index]);
+            //         }
+            //     }
+            //     pixels.sort((a, b) => a - b);
+            //     data[(y * width + x) * 4 + c] = pixels[4];
+            // }
+            const pixels = [];
+            for (let dy = -1; dy <= 1; dy++) {
+                for (let dx = -1; dx <= 1; dx++) {
+                    const index = ((y + dy) * width + (x + dx)) * 4;
+                    pixels.push(copy[index]);
                 }
-                pixels.sort((a, b) => a - b);
-                data[(y * width + x) * 4 + c] = pixels[4];
             }
+            pixels.sort((a, b) => a - b);
+            // MEMO:モノクロに変換されているからこれでいい
+            data[(y * width + x) * 4] = pixels[4];
+            data[(y * width + x) * 4 + 1] = pixels[4];
+            data[(y * width + x) * 4 + 2] = pixels[4];
         }
     }
 }
