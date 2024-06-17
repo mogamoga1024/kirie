@@ -56,6 +56,18 @@
             @change="onChangeBaseAverageColor">
         </div>
       </div>
+
+      <div class="item">
+        <div class="name">
+          <div>有色部</div>
+        </div>
+        <div class="input">
+          <div class="radio-wrapper">
+            <div class="radio" :class="{'selected': needColoredAreas}" @click="onClickNeedColoredAreas(true)">いる</div>
+            <div class="radio" :class="{'selected': !needColoredAreas}" @click="onClickNeedColoredAreas(false)">いらない</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="action-btn-container">

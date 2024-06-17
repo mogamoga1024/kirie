@@ -13,6 +13,7 @@ const App = {
             imageWidthMin: 10,
             imageWidthMax: 5000,
             baseAverageColor: 100,
+            needColoredAreas: true,
         };
     },
     created() {
@@ -83,6 +84,13 @@ const App = {
             }
         },
 
+        onClickNeedColoredAreas(needColoredAreas) {
+            this.needColoredAreas = needColoredAreas;
+            if (this.image !== null) {
+                this.drawImage();
+            }
+        },
+
         onClickRemoveNoise() {
             if (this.image !== null) {
                 this.removeNoise();
@@ -122,15 +130,16 @@ const App = {
             dContext.putImageData(imageData1, 0, 0);
 
             // 元絵全体のモノクロ
-
-            const imageData2 = sContext.getImageData(0, 0, imageWidth, imageHeight);
-            monochrome(imageData2, this.baseAverageColor, true);
-
-            const tmpCanvas = new OffscreenCanvas(imageWidth, imageHeight);
-            const tmpContext = tmpCanvas.getContext("2d");
-            tmpContext.putImageData(imageData2, 0, 0);
-
-            dContext.drawImage(tmpCanvas, 0, 0);
+            if (this.needColoredAreas) {
+                const imageData2 = sContext.getImageData(0, 0, imageWidth, imageHeight);
+                monochrome(imageData2, this.baseAverageColor, true);
+    
+                const tmpCanvas = new OffscreenCanvas(imageWidth, imageHeight);
+                const tmpContext = tmpCanvas.getContext("2d");
+                tmpContext.putImageData(imageData2, 0, 0);
+    
+                dContext.drawImage(tmpCanvas, 0, 0);
+            }
         },
 
         removeNoise() {

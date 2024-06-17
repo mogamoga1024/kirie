@@ -33,15 +33,51 @@ button, input, select, textarea {
   background-color: #007BAE;
 }
 
+.radio-wrapper {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.radio {
+  display: inline-block;
+  height: 25px;
+  line-height: 25px;
+  padding: 4px 8px;
+  border: 2px solid #007BAE;
+  border-right-width: 0;
+  font-weight: bold;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  color: #007BAE;
+  background-color: white;
+  text-align: center;
+}
+
+.radio:first-of-type {
+  padding-left: 10px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.radio:last-of-type {
+  padding-right: 10px;
+
+  border-right-width: 2px;
+
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
 @media (any-hover: hover) {
-  .btn {
+  .btn, .radio:not(.selected) {
     transition: background-color 0.2s;
   }
   .btn.selected {
     transition: background-color 0.2s, opacity 0.2s;
   }
 
-  .btn:hover {
+  .btn:hover, .radio:not(.selected):hover {
     background-color: lightcyan;
   }
   .btn.selected:hover {
