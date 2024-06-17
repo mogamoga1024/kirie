@@ -15,6 +15,7 @@ const App = {
             baseOutlineAverageColor: 100,
             baseColoredAreasAverageColor: 100,
             needColoredAreas: true,
+            thickness: 0,
         };
     },
     created() {
@@ -98,6 +99,12 @@ const App = {
             }
         },
 
+        onChangeThickness() {
+            if (this.image !== null) {
+                this.drawImage();
+            }
+        },
+
         onClickRemoveNoise() {
             if (this.image !== null) {
                 this.removeNoise();
@@ -134,7 +141,9 @@ const App = {
             sobelFilter(imageData1);
             monochrome(imageData1, this.baseOutlineAverageColor);
 
-            thickenLines(imageData1, 1);
+            if (this.thickness > 0) {
+                thickenLines(imageData1, this.thickness);
+            }
 
             dContext.putImageData(imageData1, 0, 0);
 

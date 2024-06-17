@@ -82,6 +82,20 @@
             @change="onChangeBaseColoredAreasAverageColor">
         </div>
       </div>
+
+      <div class="item" v-show="needColoredAreas">
+        <div class="name">
+          <div>太さ</div>
+          <div class="hosoku">細:0-10:太</div>
+        </div>
+        <div class="input">
+          <plus-minus-input-numbur
+            :min="0"
+            :max="10"
+            v-model="thickness"
+            @change="onChangeThickness">
+        </div>
+      </div>
     </div>
 
     <div id="action-btn-container">
