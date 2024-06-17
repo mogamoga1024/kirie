@@ -12,7 +12,8 @@ const App = {
             imageWidth: 0,
             imageWidthMin: 10,
             imageWidthMax: 5000,
-            baseAverageColor: 100,
+            baseOutlineAverageColor: 100,
+            baseColoredAreasAverageColor: 100,
             needColoredAreas: true,
         };
     },
@@ -78,7 +79,13 @@ const App = {
             }
         },
 
-        onChangeBaseAverageColor() {
+        onChangeBaseOutlineAverageColor() {
+            if (this.image !== null) {
+                this.drawImage();
+            }
+        },
+
+        onChangeBaseColoredAreasAverageColor() {
             if (this.image !== null) {
                 this.drawImage();
             }
@@ -125,14 +132,14 @@ const App = {
 
             const imageData1 = sContext.getImageData(0, 0, imageWidth, imageHeight);
             sobelFilter(imageData1);
-            monochrome(imageData1, this.baseAverageColor);
+            monochrome(imageData1, this.baseOutlineAverageColor);
 
             dContext.putImageData(imageData1, 0, 0);
 
             // 元絵全体のモノクロ
             if (this.needColoredAreas) {
                 const imageData2 = sContext.getImageData(0, 0, imageWidth, imageHeight);
-                monochrome(imageData2, this.baseAverageColor, true);
+                monochrome(imageData2, this.baseColoredAreasAverageColor, true);
     
                 const tmpCanvas = new OffscreenCanvas(imageWidth, imageHeight);
                 const tmpContext = tmpCanvas.getContext("2d");

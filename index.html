@@ -45,15 +45,15 @@
 
       <div class="item">
         <div class="name">
-          <div>黒閾値</div>
+          <div>輪郭黒</div>
           <div class="hosoku">少:0-255:多</div>
         </div>
         <div class="input">
           <plus-minus-input-numbur
             :min="0"
             :max="255"
-            v-model="baseAverageColor"
-            @change="onChangeBaseAverageColor">
+            v-model="baseOutlineAverageColor"
+            @change="onChangeBaseOutlineAverageColor">
         </div>
       </div>
 
@@ -66,6 +66,20 @@
             <div class="radio" :class="{'selected': needColoredAreas}" @click="onClickNeedColoredAreas(true)">いる</div>
             <div class="radio" :class="{'selected': !needColoredAreas}" @click="onClickNeedColoredAreas(false)">いらない</div>
           </div>
+        </div>
+      </div>
+
+      <div class="item" v-show="needColoredAreas">
+        <div class="name">
+          <div>有色黒</div>
+          <div class="hosoku">少:0-255:多</div>
+        </div>
+        <div class="input">
+          <plus-minus-input-numbur
+            :min="0"
+            :max="255"
+            v-model="baseColoredAreasAverageColor"
+            @change="onChangeBaseColoredAreasAverageColor">
         </div>
       </div>
     </div>

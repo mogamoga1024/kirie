@@ -281,7 +281,7 @@ function medianFilter(imageData) {
 //     }
 // }
 
-function monochrome(imageData, baseAverageColor = 110, needTransparent = false) {
+function monochrome(imageData, baseOutlineAverageColor = 110, needTransparent = false) {
     const data = imageData.data;
     for (let i = 0; i < data.length; i += 4) {
         const r = data[i];
@@ -294,7 +294,7 @@ function monochrome(imageData, baseAverageColor = 110, needTransparent = false) 
             data[i + 2] = 255;
             data[i + 3] = 255;
         }
-        else if (value <= baseAverageColor) {
+        else if (value <= baseOutlineAverageColor) {
             data[i]     = 0;
             data[i + 1] = 0;
             data[i + 2] = 0;
