@@ -431,6 +431,15 @@ function thickenLines(imageData, thickness) {
         }
     }
 }
-  
-  
-  
+
+function gammaCorrection(imageData, gamma) {
+    const data = imageData.data;
+    const length = data.length;
+    const gammaCorrection = 1 / gamma;
+
+    for (let i = 0; i < length; i += 4) {
+        data[i] = 255 * Math.pow(data[i] / 255, gammaCorrection);
+        data[i + 1] = 255 * Math.pow(data[i + 1] / 255, gammaCorrection);
+        data[i + 2] = 255 * Math.pow(data[i + 2] / 255, gammaCorrection);
+    }
+}
