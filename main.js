@@ -15,7 +15,6 @@ const App = {
             baseOutlineAverageColor: 100,
             baseColoredAreasAverageColor: 100,
             needColoredAreas: true,
-            thickness: 0,
         };
     },
     created() {
@@ -106,7 +105,6 @@ const App = {
         },
 
         onClickThickness() {
-            this.thickness += 1;
             if (this.image !== null) {
                 this.thickenLines();
             }
@@ -125,8 +123,6 @@ const App = {
         },
 
         drawImage() {
-            this.thickness = 0;
-
             const sCanvas = this.$refs.srcCanvas;
             const sContext = sCanvas.getContext("2d", { willReadFrequently: true });
             const dCanvas = this.$refs.dstCanvas;
@@ -174,7 +170,7 @@ const App = {
             const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
 
             const imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
-            thickenLines(imageData, this.thickness);
+            thickenLines(imageData, 1);
 
             dContext.putImageData(imageData, 0, 0);
         },
