@@ -359,8 +359,8 @@ function sobelFilter(imageData) {
                 }
             }
 
-            const magnitude = Math.sqrt(pixelX * pixelX + pixelY * pixelY);
-            sobelData[y * width + x] = Math.round(magnitude);
+            const magnitude = Math.round(Math.sqrt(pixelX * pixelX + pixelY * pixelY));
+            sobelData[y * width + x] = magnitude;
         }
     }
 
