@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>画像から切り絵を生成するWebツール</title>
+  <title>画像から切り絵を生成するWebツール 兼 画像から輪郭を抽出するWebツール</title>
   <!-- レスポンシブ対応 -->
   <script src="https://cdn.jsdelivr.net/npm/viewport-extra@1.0.3/dist/viewport-extra.min.js"></script>
   <script>new ViewportExtra(375)</script>
@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="/css/plus_minus_input_number.css">
 </head>
 <body>
-  <h1>画像から切り絵を生成するWebツール</h1>
+  <h1>画像から切り絵を生成するWebツール 兼 画像から輪郭を抽出するWebツール</h1>
   <div id="app" v-cloak>
     <div class="input-file-container">
       <div class="input-file">
@@ -102,7 +102,10 @@
     <div class="canvas-container">
       <div id="dst-title">加工画像</div>
       <canvas ref="dstCanvas"></canvas>
-      <!-- <div id="svg-container"></div> -->
+    </div>
+
+    <div style="margin-top: 16px;">
+      細かい調整はペイントソフトでも使って…
     </div>
   </div>
 
