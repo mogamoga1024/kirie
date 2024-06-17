@@ -326,7 +326,6 @@ function sobelFilter(imageData) {
     const width = imageData.width;
     const height = imageData.height;
 
-    // グレースケール変換
     for (let i = 0; i < data.length; i += 4) {
         const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
         data[i] = avg;
@@ -334,12 +333,7 @@ function sobelFilter(imageData) {
         data[i + 2] = avg;
     }
 
-    const sobelData = new Uint8ClampedArray(data.length);
-    const grayscaleData = new Uint8ClampedArray(width * height);
-    
-    for (let i = 0; i < data.length; i += 4) {
-        grayscaleData[i / 4] = data[i];
-    }
+    const sobelData = new Uint8ClampedArray(width * height);
 
     const kernelX = [
         [-1, 0, 1],
@@ -352,7 +346,6 @@ function sobelFilter(imageData) {
         [1, 2, 1]
     ];
 
-    // エッジ検出
     for (let y = 1; y < height - 1; y++) {
         for (let x = 1; x < width - 1; x++) {
             let pixelX = 0;
@@ -360,27 +353,28 @@ function sobelFilter(imageData) {
 
             for (let ky = -1; ky <= 1; ky++) {
                 for (let kx = -1; kx <= 1; kx++) {
-                    const val = grayscaleData[(y + ky) * width + (x + kx)];
-                    pixelX += val * kernelX[ky + 1][kx + 1];
-                    pixelY += val * kernelY[ky + 1][kx + 1];
+                    const pixel = data[((y + ky) * width + (x + kx)) * 4];
+                    pixelX += pixel * kernelX[ky + 1][kx + 1];
+                    pixelY += pixel * kernelY[ky + 1][kx + 1];
                 }
             }
 
-            const magnitude = Math.sqrt(pixelX * pixelX + pixelY * pixelY) >>> 0;
-            const index = (y * width + x) * 4;
-            sobelData[index] = magnitude;
-            sobelData[index + 1] = magnitude;
-            sobelData[index + 2] = magnitude;
-            sobelData[index + 3] = 255;
+            const magnitude = Math.sqrt(pixelX * pixelX + pixelY * pixelY);
+            sobelData[y * width + x] = Math.round(magnitude);
         }
     }
 
-    for (let i = 0; i < data.length; i += 4) {
-        data[i] = 255 - sobelData[i];
-        data[i + 1] = 255 - sobelData[i];
-        data[i + 2] = 255 - sobelData[i];
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            const idx = (y * width + x) * 4;
+            const magnitude = sobelData[y * width + x];
+            data[idx] = 255 - magnitude;
+            data[idx + 1] = 255 - magnitude;
+            data[idx + 2] = 255 - magnitude;
+            data[idx + 3] = 255;
+        }
     }
-}
+}  
 
 function convertToSVG(imageData) {
     const options = {
