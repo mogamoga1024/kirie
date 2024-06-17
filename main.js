@@ -99,15 +99,16 @@ const App = {
             }
         },
 
-        onChangeThickness() {
-            if (this.image !== null) {
-                this.drawImage();
-            }
-        },
-
         onClickRemoveNoise() {
             if (this.image !== null) {
                 this.removeNoise();
+            }
+        },
+
+        onClickThickness() {
+            this.thickness += 1;
+            if (this.image !== null) {
+                this.thickenLines();
             }
         },
 
@@ -124,6 +125,8 @@ const App = {
         },
 
         drawImage() {
+            this.thickness = 0;
+
             const sCanvas = this.$refs.srcCanvas;
             const sContext = sCanvas.getContext("2d", { willReadFrequently: true });
             const dCanvas = this.$refs.dstCanvas;
@@ -141,14 +144,10 @@ const App = {
             sobelFilter(imageData1);
             monochrome(imageData1, this.baseOutlineAverageColor);
 
-            if (this.thickness > 0) {
-                thickenLines(imageData1, this.thickness);
-            }
-
             dContext.putImageData(imageData1, 0, 0);
 
             // 元絵全体のモノクロ
-            if (this.needColoredAreas && false) {
+            if (this.needColoredAreas) {
                 const imageData2 = sContext.getImageData(0, 0, imageWidth, imageHeight);
                 monochrome(imageData2, this.baseColoredAreasAverageColor, true);
     
@@ -166,6 +165,16 @@ const App = {
 
             const imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
             medianFilter(imageData);
+
+            dContext.putImageData(imageData, 0, 0);
+        },
+
+        thickenLines() {
+            const dCanvas = this.$refs.dstCanvas;
+            const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
+
+            const imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
+            thickenLines(imageData, this.thickness);
 
             dContext.putImageData(imageData, 0, 0);
         },
