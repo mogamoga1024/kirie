@@ -15,6 +15,7 @@ const App = {
             baseOutlineAverageColor: 100,
             baseColoredAreasAverageColor: 100,
             needColoredAreas: true,
+            gamma: 1.0,
         };
     },
     created() {
@@ -98,6 +99,12 @@ const App = {
             }
         },
 
+        onChangeGamma() {
+            if (this.image !== null) {
+                this.drawImage();
+            }
+        },
+
         onClickRemoveNoise() {
             if (this.image !== null) {
                 this.removeNoise();
@@ -134,9 +141,14 @@ const App = {
             sCanvas.height = dCanvas.height = imageHeight;
             sContext.drawImage(this.image, 0, 0, imageWidth, imageHeight);
 
-            // 輪郭抽出
+            // ガンマ補正
 
             const imageData1 = sContext.getImageData(0, 0, imageWidth, imageHeight);
+            gammaCorrection(imageData1, this.gamma);
+            sContext.putImageData(imageData1, 0, 0);
+
+            // 輪郭抽出
+
             sobelFilter(imageData1);
             monochrome(imageData1, this.baseOutlineAverageColor);
 

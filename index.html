@@ -82,6 +82,21 @@
             @change="onChangeBaseColoredAreasAverageColor">
         </div>
       </div>
+
+      <div class="item">
+        <div class="name">
+          <div>ガンマ補正</div>
+          <div class="hosoku">濃:0-5:薄</div>
+        </div>
+        <div class="input">
+          <plus-minus-input-numbur
+            :min="0"
+            :max="5"
+            :step="0.1"
+            v-model="gamma"
+            @change="onChangeGamma">
+        </div>
+      </div>
     </div>
 
     <div id="action-btn-container">
