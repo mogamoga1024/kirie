@@ -389,3 +389,39 @@ function convertToSVG(imageData) {
     return ImageTracer.imagedataToSVG(imageData, options);
 }
 
+function thickenLines(imageData, thickness) {
+    const data = imageData.data;
+    const width = imageData.width;
+    const height = imageData.height;
+    const newData = new Uint8ClampedArray(data.length);
+
+    // ピクセル操作
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            const index = (y * width + x) * 4;
+            if (data[index] === 0) { // 黒色の場合のみ操作する（線の部分）
+                for (let dy = -thickness; dy <= thickness; dy++) {
+                    for (let dx = -thickness; dx <= thickness; dx++) {
+                        const newX = x + dx;
+                        const newY = y + dy;
+                        if (newX >= 0 && newX < width && newY >= 0 && newY < height) {
+                            const newIndex = (newY * width + newX) * 4;
+                            newData[newIndex] = 0; // Red チャネル
+                            newData[newIndex + 1] = 0; // Green チャネル
+                            newData[newIndex + 2] = 0; // Blue チャネル
+                            newData[newIndex + 3] = 255; // Alpha チャネル（不透明度）
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // newDataを元のImageDataにコピーする
+    for (let i = 0; i < data.length; i++) {
+        data[i] = newData[i];
+    }
+}
+  
+  
+  
