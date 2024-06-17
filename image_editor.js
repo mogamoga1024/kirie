@@ -393,7 +393,7 @@ function thickenLines(imageData, thickness) {
     const data = imageData.data;
     const width = imageData.width;
     const height = imageData.height;
-    const newData = new Uint8ClampedArray(data.length);
+    const blackData = new Array(width * height);
 
     for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
@@ -404,11 +404,8 @@ function thickenLines(imageData, thickness) {
                         const newX = x + dx;
                         const newY = y + dy;
                         if (newX >= 0 && newX < width && newY >= 0 && newY < height) {
-                            const newIndex = (newY * width + newX) * 4;
-                            newData[newIndex] = 0;
-                            newData[newIndex + 1] = 0;
-                            newData[newIndex + 2] = 0;
-                            newData[newIndex + 3] = 255;
+                            const newIndex = newY * width + newX;
+                            blackData[newIndex] = true;
                         }
                     }
                 }
@@ -416,8 +413,22 @@ function thickenLines(imageData, thickness) {
         }
     }
 
-    for (let i = 0; i < data.length; i++) {
-        data[i] = newData[i];
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            const blackIndex = y * width + x;
+            const index = blackIndex * 4;
+            if (blackData[blackIndex]) {
+                data[index] = 0;
+                data[index + 1] = 0;
+                data[index + 2] = 0;
+                data[index + 3] = 255;
+            } else {
+                data[index] = 255;
+                data[index + 1] = 255;
+                data[index + 2] = 255;
+                data[index + 3] = 255;
+            }
+        }
     }
 }
   
