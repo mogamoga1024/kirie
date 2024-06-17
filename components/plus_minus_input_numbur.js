@@ -7,6 +7,10 @@ const PlusMinusInputNumbur = {
         step: {
             type: Number,
             default: 1
+        },
+        decimalPlaces: {
+            type: Number,
+            default: 0
         }
     },
     emits: ["update:modelValue", "change"],
@@ -46,7 +50,7 @@ const PlusMinusInputNumbur = {
                 return;
             }
 
-            const newModelValue = this.modelValue - this.step;
+            const newModelValue = this.roundToDecimalPlaces(this.modelValue - this.step);
             if (newModelValue >= this.min) {
                 this.$emit("update:modelValue", newModelValue);
                 this.$emit("change", newModelValue);
@@ -61,7 +65,7 @@ const PlusMinusInputNumbur = {
                 return;
             }
 
-            const newModelValue = this.modelValue + this.step;
+            const newModelValue = this.roundToDecimalPlaces(this.modelValue + this.step);
             if (newModelValue <= this.max) {
                 this.$emit("update:modelValue", newModelValue);
                 this.$emit("change", newModelValue);
@@ -92,6 +96,10 @@ const PlusMinusInputNumbur = {
                 this.$emit("update:modelValue", newModelValue);
                 this.$emit("change", newModelValue);
             }
+        },
+        roundToDecimalPlaces(num) {
+            const factor = Math.pow(10, this.decimalPlaces);
+            return Math.round(num * factor) / factor;
         }
     }
 };
