@@ -13,6 +13,8 @@ const App = {
             imageWidthMin: 10,
             imageWidthMax: 5000,
             outlineAlgorithm: "sobelFilter",
+            lowThreshold: 70,
+            highThreshold: 70,
             baseOutlineAverageColor: 100,
             baseColoredAreasAverageColor: 100,
             needColoredAreas: true,
@@ -87,6 +89,18 @@ const App = {
             }
         },
 
+        onChangeLowThreshold() {
+            if (this.image !== null) {
+                this.drawImage();
+            }
+        },
+
+        onChangeHighThreshold() {
+            if (this.image !== null) {
+                this.drawImage();
+            }
+        },
+
         onChangeBaseOutlineAverageColor() {
             if (this.image !== null) {
                 this.drawImage();
@@ -156,12 +170,12 @@ const App = {
 
             // 輪郭抽出
 
-            // switch (this.outlineAlgorithm) {
-            //     case "sobelFilter": sobelFilter(imageData1); break;
-            //     case "prewittFilter": prewittFilter(imageData1); break;
-            //     case "laplacianFilter": laplacianFilter(imageData1); break;
-            // }
-            cannyEdgeDetection(imageData1);
+            switch (this.outlineAlgorithm) {
+                case "sobelFilter": sobelFilter(imageData1); break;
+                case "prewittFilter": prewittFilter(imageData1); break;
+                case "cannyEdgeDetection": cannyEdgeDetection(imageData1, this.lowThreshold, this.highThreshold); break;
+                case "laplacianFilter": laplacianFilter(imageData1); break;
+            }
             monochrome(imageData1, this.baseOutlineAverageColor);
 
             dContext.putImageData(imageData1, 0, 0);

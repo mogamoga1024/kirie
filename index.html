@@ -51,8 +51,36 @@
           <select v-model="outlineAlgorithm" @change="onChangeOutlineAlgorithm">
             <option :value="'sobelFilter'">SobelFilter</option>
             <option :value="'prewittFilter'">PrewittFilter</option>
+            <option :value="'cannyEdgeDetection'">Canny</option>
             <option :value="'laplacianFilter'">LaplacianFilter</option>
           </select>
+        </div>
+      </div>
+
+      <div class="item" v-show="outlineAlgorithm === 'cannyEdgeDetection'">
+        <div class="name">
+          <div>エッジ(低)</div>
+          <div class="hosoku">多:0-255:少</div>
+        </div>
+        <div class="input">
+          <plus-minus-input-numbur
+            :min="0"
+            :max="255"
+            v-model="lowThreshold"
+            @change="onChangeLowThreshold">
+        </div>
+      </div>
+      <div class="item" v-show="outlineAlgorithm === 'cannyEdgeDetection'">
+        <div class="name">
+          <div>エッジ(高)</div>
+          <div class="hosoku">多:0-255:少</div>
+        </div>
+        <div class="input">
+          <plus-minus-input-numbur
+            :min="0"
+            :max="255"
+            v-model="highThreshold"
+            @change="onChangeHighThreshold">
         </div>
       </div>
 
