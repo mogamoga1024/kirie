@@ -156,11 +156,12 @@ const App = {
 
             // 輪郭抽出
 
-            switch (this.outlineAlgorithm) {
-                case "sobelFilter": sobelFilter(imageData1); break;
-                case "prewittFilter": prewittFilter(imageData1); break;
-                case "laplacianFilter": laplacianFilter(imageData1); break;
-            }
+            // switch (this.outlineAlgorithm) {
+            //     case "sobelFilter": sobelFilter(imageData1); break;
+            //     case "prewittFilter": prewittFilter(imageData1); break;
+            //     case "laplacianFilter": laplacianFilter(imageData1); break;
+            // }
+            cannyEdgeDetection(imageData1);
             monochrome(imageData1, this.baseOutlineAverageColor);
 
             dContext.putImageData(imageData1, 0, 0);
