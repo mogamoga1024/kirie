@@ -27,7 +27,7 @@ const App = {
         this.image.onload = () => {
             this.imageFileName = "test";
             this.imageWidth = this.image.width;
-            this.drawImage();
+            this.drawImage(true);
         };
     },
     methods: {
@@ -62,7 +62,7 @@ const App = {
                 this.imageFileName = imageFile.name;
                 this.imageWidth = this.image.width;
 
-                this.drawImage();
+                this.drawImage(true);
 
                 URL.revokeObjectURL(this.image.src);
                 isLoadingInputImage = false;
@@ -122,7 +122,7 @@ const App = {
 
         onChangeGamma() {
             if (this.image !== null) {
-                this.drawImage();
+                this.drawImage(true);
             }
         },
 
@@ -150,26 +150,28 @@ const App = {
             }
         },
 
-        drawImage() {
+        drawImage(hasImageChanged = false) {
             const sCanvas = this.$refs.srcCanvas;
             const sContext = sCanvas.getContext("2d", { willReadFrequently: true });
             const dCanvas = this.$refs.dstCanvas;
             const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
-            const imageWidth = this.imageWidth;
-            const imageHeight = this.image.height * this.imageWidth / this.image.width;
-            sCanvas.style.maxWidth = dCanvas.style.maxWidth = `${imageWidth}px`;
-            sCanvas.width = dCanvas.width = imageWidth;
-            sCanvas.height = dCanvas.height = imageHeight;
-            sContext.drawImage(this.image, 0, 0, imageWidth, imageHeight);
 
+            if (hasImageChanged) {
+                const imageWidth = this.imageWidth;
+                const imageHeight = this.image.height * this.imageWidth / this.image.width;
+                sCanvas.style.maxWidth = dCanvas.style.maxWidth = `${imageWidth}px`;
+                sCanvas.width = dCanvas.width = imageWidth;
+                sCanvas.height = dCanvas.height = imageHeight;
+                sContext.drawImage(this.image, 0, 0, sCanvas.width, sCanvas.height);
+            }
+
+            const imageData1 = sContext.getImageData(0, 0, sCanvas.width, sCanvas.height);
+            
             // ガンマ補正
-
-            const imageData1 = sContext.getImageData(0, 0, imageWidth, imageHeight);
             gammaCorrection(imageData1, this.gamma);
             sContext.putImageData(imageData1, 0, 0);
 
-            // 輪郭抽出
-
+            // 輪郭抽出 & モノクロ
             switch (this.outlineAlgorithm) {
                 case "sobelFilter": sobelFilter(imageData1); break;
                 case "prewittFilter": prewittFilter(imageData1); break;
@@ -177,15 +179,14 @@ const App = {
                 case "laplacianFilter": laplacianFilter(imageData1); break;
             }
             monochrome(imageData1, this.baseOutlineAverageColor);
-
             dContext.putImageData(imageData1, 0, 0);
 
             // 元絵全体のモノクロ
             if (this.needColoredAreas) {
-                const imageData2 = sContext.getImageData(0, 0, imageWidth, imageHeight);
+                const imageData2 = sContext.getImageData(0, 0, sCanvas.width, sCanvas.height);
                 monochrome(imageData2, this.baseColoredAreasAverageColor, true);
     
-                const tmpCanvas = new OffscreenCanvas(imageWidth, imageHeight);
+                const tmpCanvas = new OffscreenCanvas(sCanvas.width, sCanvas.height);
                 const tmpContext = tmpCanvas.getContext("2d");
                 tmpContext.putImageData(imageData2, 0, 0);
     
