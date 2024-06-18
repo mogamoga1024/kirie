@@ -166,7 +166,7 @@ const App = {
             dContext.putImageData(imageData1, 0, 0);
 
             // 元絵全体のモノクロ
-            if (this.needColoredAreas && false) {
+            if (this.needColoredAreas) {
                 const imageData2 = sContext.getImageData(0, 0, imageWidth, imageHeight);
                 monochrome(imageData2, this.baseColoredAreasAverageColor, true);
     
