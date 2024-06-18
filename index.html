@@ -45,6 +45,19 @@
 
       <div class="item">
         <div class="name">
+          <div>輪郭検出法</div>
+        </div>
+        <div class="input">
+          <select v-model="outlineAlgorithm" @change="onChangeOutlineAlgorithm">
+            <option :value="'sobelFilter'">SobelFilter</option>
+            <option :value="'prewittFilter'">PrewittFilter</option>
+            <option :value="'laplacianFilter'">LaplacianFilter</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="name">
           <div>輪郭黒</div>
           <div class="hosoku">少:0-255:多</div>
         </div>

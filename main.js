@@ -12,6 +12,7 @@ const App = {
             imageWidth: 0,
             imageWidthMin: 10,
             imageWidthMax: 5000,
+            outlineAlgorithm: "sobelFilter",
             baseOutlineAverageColor: 100,
             baseColoredAreasAverageColor: 100,
             needColoredAreas: true,
@@ -75,6 +76,12 @@ const App = {
         },
 
         onChangeImageWidth() {
+            if (this.image !== null) {
+                this.drawImage();
+            }
+        },
+
+        onChangeOutlineAlgorithm() {
             if (this.image !== null) {
                 this.drawImage();
             }
@@ -149,9 +156,11 @@ const App = {
 
             // 輪郭抽出
 
-            sobelFilter(imageData1);
-            // prewittFilter(imageData1);
-            // laplacianFilter(imageData1);
+            switch (this.outlineAlgorithm) {
+                case "sobelFilter": sobelFilter(imageData1); break;
+                case "prewittFilter": prewittFilter(imageData1); break;
+                case "laplacianFilter": laplacianFilter(imageData1); break;
+            }
             monochrome(imageData1, this.baseOutlineAverageColor);
 
             dContext.putImageData(imageData1, 0, 0);

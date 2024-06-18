@@ -419,7 +419,6 @@ function prewittFilter(imageData) {
         }
     }
 
-    // 結果をimageData.dataに反映
     for (let y = 1; y < height - 1; y++) {
         for (let x = 1; x < width - 1; x++) {
             const idx = (y * width + x) * 4;
