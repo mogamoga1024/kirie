@@ -310,31 +310,6 @@ const App = {
                 dBitmap
             }, [dBitmap]);
         },
-
-        convertToSVG_old() {
-            if (this.isProcessing) {
-                return;
-            }
-            this.isProcessing = true;
-
-            const dCanvas = this.$refs.dstCanvas;
-            const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
-
-            let imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
-            const strSvg = convertToSVG(imageData);
-
-            const v = canvg.Canvg.fromString(dContext, strSvg);
-            v.render();
-            this.$refs.dstCanvas.style.width = "";
-            this.$refs.dstCanvas.style.height = "";
-
-            imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
-            monochrome(imageData, 128);
-
-            dContext.putImageData(imageData, 0, 0);
-
-            this.isProcessing = false;
-        },
     }
 };
 
