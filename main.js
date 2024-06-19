@@ -8,6 +8,11 @@ const App = {
     },
     data() {
         return {
+            // UI制御系
+            isProcessing: false,
+            moon: "🌕",
+
+            // ロジック系
             imageFileName: "",
             image: null,
             imageWidth: 0,
@@ -152,6 +157,8 @@ const App = {
         },
 
         drawImage() {
+            this.isProcessing = true;
+
             if (worker !== null) {
                 worker.terminate();
                 worker = null;
@@ -174,9 +181,12 @@ const App = {
                 this.$refs.dstImage.style.maxWidth = imageWidth + "px";
                 this.$refs.srcImage.src = sBase64;
                 this.$refs.dstImage.src = dBase64;
+
+                this.isProcessing = false;
             };
             worker.onerror = e => {
                 alert("エラーが発生しました。");
+                this.isProcessing = false;
             };
 
             worker.postMessage({
@@ -195,6 +205,11 @@ const App = {
         },
 
         removeNoise() {
+            if (this.isProcessing) {
+                return;
+            }
+            this.isProcessing = true;
+
             const dCanvas = this.$refs.dstCanvas;
             const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
 
@@ -202,9 +217,16 @@ const App = {
             medianFilter(imageData);
 
             dContext.putImageData(imageData, 0, 0);
+
+            this.isProcessing = false;
         },
 
         thickenLines() {
+            if (this.isProcessing) {
+                return;
+            }
+            this.isProcessing = true;
+
             const dCanvas = this.$refs.dstCanvas;
             const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
 
@@ -212,9 +234,16 @@ const App = {
             thickenLines(imageData, 1);
 
             dContext.putImageData(imageData, 0, 0);
+
+            this.isProcessing = false;
         },
 
         convertToSVG() {
+            if (this.isProcessing) {
+                return;
+            }
+            this.isProcessing = true;
+
             const dCanvas = this.$refs.dstCanvas;
             const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
 
@@ -230,6 +259,8 @@ const App = {
             monochrome(imageData, 128);
 
             dContext.putImageData(imageData, 0, 0);
+
+            this.isProcessing = false;
         },
     }
 };
