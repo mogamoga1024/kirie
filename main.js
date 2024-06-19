@@ -151,7 +151,7 @@ const App = {
             }
         },
 
-        drawImage(hasImageChanged = false) {
+        drawImage() {
             if (worker !== null) {
                 worker.terminate(); worker = null;
             }
@@ -166,10 +166,13 @@ const App = {
 
             worker = new Worker("./worker/create_image_worker.js");
             worker.onmessage = e => {
+                const sBase64 = e.data.sBase64;
+                const dBase64 = e.data.dBase64;
+
                 // todo
             };
             worker.onerror = e => {
-                // todo
+                alert("エラーが発生しました。");
             };
 
             worker.postMessage({
@@ -184,45 +187,6 @@ const App = {
                 needColoredAreas: this.needColoredAreas,
                 baseColoredAreasAverageColor: this.baseColoredAreasAverageColor,
             }, [sBitmap]);
-
-            return;
-
-            // if (hasImageChanged) {
-            //     const imageWidth = this.imageWidth;
-            //     const imageHeight = this.image.height * this.imageWidth / this.image.width;
-            //     sCanvas.style.maxWidth = dCanvas.style.maxWidth = `${imageWidth}px`;
-            //     sCanvas.width = dCanvas.width = imageWidth;
-            //     sCanvas.height = dCanvas.height = imageHeight;
-            //     sContext.drawImage(this.image, 0, 0, sCanvas.width, sCanvas.height);
-            // }
-
-            // const imageData1 = sContext.getImageData(0, 0, sCanvas.width, sCanvas.height);
-            
-            // // ガンマ補正
-            // gammaCorrection(imageData1, this.gamma);
-            // sContext.putImageData(imageData1, 0, 0);
-
-            // // 輪郭抽出 & モノクロ
-            // switch (this.outlineAlgorithm) {
-            //     case "sobelFilter": sobelFilter(imageData1); break;
-            //     case "prewittFilter": prewittFilter(imageData1); break;
-            //     case "cannyEdgeDetection": cannyEdgeDetection(imageData1, this.lowThreshold, this.highThreshold); break;
-            //     case "laplacianFilter": laplacianFilter(imageData1); break;
-            // }
-            // monochrome(imageData1, this.baseOutlineAverageColor);
-            // dContext.putImageData(imageData1, 0, 0);
-
-            // // 元絵全体のモノクロ
-            // if (this.needColoredAreas) {
-            //     const imageData2 = sContext.getImageData(0, 0, sCanvas.width, sCanvas.height);
-            //     monochrome(imageData2, this.baseColoredAreasAverageColor, true);
-    
-            //     const tmpCanvas = new OffscreenCanvas(sCanvas.width, sCanvas.height);
-            //     const tmpContext = tmpCanvas.getContext("2d");
-            //     tmpContext.putImageData(imageData2, 0, 0);
-    
-            //     dContext.drawImage(tmpCanvas, 0, 0);
-            // }
         },
 
         removeNoise() {

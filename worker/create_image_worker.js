@@ -49,9 +49,7 @@ onmessage = async evnt => {
     }
 
     const [sBase64, dBase64] = await Promise.all([canvasToBase64(sCanvas), canvasToBase64(dCanvas)]);
-
-    console.log("sBase64: " + sBase64);
-    console.log("dBase64: " + dBase64);
+    postMessage({sBase64, dBase64});
 };
 
 function canvasToBase64(canvas) {
