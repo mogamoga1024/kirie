@@ -172,7 +172,18 @@ const App = {
                 // todo
             };
 
-            worker.postMessage({sBitmap, imageWidth, imageHeight}, [sBitmap]);
+            worker.postMessage({
+                sBitmap,
+                imageWidth,
+                imageHeight,
+                gamma: this.gamma,
+                outlineAlgorithm: this.outlineAlgorithm,
+                lowThreshold: this.lowThreshold,
+                highThreshold: this.highThreshold,
+                baseOutlineAverageColor: this.baseOutlineAverageColor,
+                needColoredAreas: this.needColoredAreas,
+                baseColoredAreasAverageColor: this.baseColoredAreasAverageColor,
+            }, [sBitmap]);
 
             return;
 
@@ -185,33 +196,33 @@ const App = {
             //     sContext.drawImage(this.image, 0, 0, sCanvas.width, sCanvas.height);
             // }
 
-            const imageData1 = sContext.getImageData(0, 0, sCanvas.width, sCanvas.height);
+            // const imageData1 = sContext.getImageData(0, 0, sCanvas.width, sCanvas.height);
             
-            // ガンマ補正
-            gammaCorrection(imageData1, this.gamma);
-            sContext.putImageData(imageData1, 0, 0);
+            // // ガンマ補正
+            // gammaCorrection(imageData1, this.gamma);
+            // sContext.putImageData(imageData1, 0, 0);
 
-            // 輪郭抽出 & モノクロ
-            switch (this.outlineAlgorithm) {
-                case "sobelFilter": sobelFilter(imageData1); break;
-                case "prewittFilter": prewittFilter(imageData1); break;
-                case "cannyEdgeDetection": cannyEdgeDetection(imageData1, this.lowThreshold, this.highThreshold); break;
-                case "laplacianFilter": laplacianFilter(imageData1); break;
-            }
-            monochrome(imageData1, this.baseOutlineAverageColor);
-            dContext.putImageData(imageData1, 0, 0);
+            // // 輪郭抽出 & モノクロ
+            // switch (this.outlineAlgorithm) {
+            //     case "sobelFilter": sobelFilter(imageData1); break;
+            //     case "prewittFilter": prewittFilter(imageData1); break;
+            //     case "cannyEdgeDetection": cannyEdgeDetection(imageData1, this.lowThreshold, this.highThreshold); break;
+            //     case "laplacianFilter": laplacianFilter(imageData1); break;
+            // }
+            // monochrome(imageData1, this.baseOutlineAverageColor);
+            // dContext.putImageData(imageData1, 0, 0);
 
-            // 元絵全体のモノクロ
-            if (this.needColoredAreas) {
-                const imageData2 = sContext.getImageData(0, 0, sCanvas.width, sCanvas.height);
-                monochrome(imageData2, this.baseColoredAreasAverageColor, true);
+            // // 元絵全体のモノクロ
+            // if (this.needColoredAreas) {
+            //     const imageData2 = sContext.getImageData(0, 0, sCanvas.width, sCanvas.height);
+            //     monochrome(imageData2, this.baseColoredAreasAverageColor, true);
     
-                const tmpCanvas = new OffscreenCanvas(sCanvas.width, sCanvas.height);
-                const tmpContext = tmpCanvas.getContext("2d");
-                tmpContext.putImageData(imageData2, 0, 0);
+            //     const tmpCanvas = new OffscreenCanvas(sCanvas.width, sCanvas.height);
+            //     const tmpContext = tmpCanvas.getContext("2d");
+            //     tmpContext.putImageData(imageData2, 0, 0);
     
-                dContext.drawImage(tmpCanvas, 0, 0);
-            }
+            //     dContext.drawImage(tmpCanvas, 0, 0);
+            // }
         },
 
         removeNoise() {
