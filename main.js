@@ -169,7 +169,10 @@ const App = {
                 const sBase64 = e.data.sBase64;
                 const dBase64 = e.data.dBase64;
 
-                // todo
+                this.$refs.srcImage.style.maxWidth = imageWidth + "px";
+                this.$refs.dstImage.style.maxWidth = imageWidth + "px";
+                this.$refs.srcImage.src = sBase64;
+                this.$refs.dstImage.src = dBase64;
             };
             worker.onerror = e => {
                 alert("エラーが発生しました。");
