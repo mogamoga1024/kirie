@@ -191,14 +191,10 @@ const App = {
 
             worker = new Worker("./worker/create_image_worker.js");
             worker.onmessage = e => {
-                const sBase64 = e.data.sBase64;
-                const dBase64 = e.data.dBase64;
-
                 this.$refs.srcImage.style.maxWidth = imageWidth + "px";
                 this.$refs.dstImage.style.maxWidth = imageWidth + "px";
-                this.$refs.srcImage.src = sBase64;
-                this.$refs.dstImage.src = dBase64;
-
+                this.$refs.srcImage.src = e.data.sBase64;
+                this.$refs.dstImage.src = e.data.dBase64;
                 this.isProcessing = false;
             };
             worker.onerror = e => {
@@ -209,8 +205,6 @@ const App = {
             worker.postMessage({
                 method: "createImage",
                 sBitmap,
-                imageWidth,
-                imageHeight,
                 gamma: this.gamma,
                 outlineAlgorithm: this.outlineAlgorithm,
                 lowThreshold: this.lowThreshold,
@@ -227,15 +221,27 @@ const App = {
             }
             this.isProcessing = true;
 
-            const dCanvas = this.$refs.dstCanvas;
+            const imageWidth = this.$refs.dstImage.naturalWidth;
+            const imageHeight = this.$refs.dstImage.naturalHeight;
+            const dCanvas = new OffscreenCanvas(imageWidth, imageHeight);
             const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
+            dContext.drawImage(this.$refs.dstImage, 0, 0, dCanvas.width, dCanvas.height);
+            const dBitmap = dCanvas.transferToImageBitmap();
 
-            const imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
-            medianFilter(imageData);
+            worker = new Worker("./worker/create_image_worker.js");
+            worker.onmessage = e => {
+                this.$refs.dstImage.src = e.data.dBase64;
+                this.isProcessing = false;
+            };
+            worker.onerror = e => {
+                alert("エラーが発生しました。");
+                this.isProcessing = false;
+            };
 
-            dContext.putImageData(imageData, 0, 0);
-
-            this.isProcessing = false;
+            worker.postMessage({
+                method: "removeNoise",
+                dBitmap
+            }, [dBitmap]);
         },
 
         thickenLines() {

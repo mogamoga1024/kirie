@@ -5,6 +5,9 @@ onmessage = evnt => {
         case "createImage":
             createImage(evnt);
             break;
+        case "removeNoise":
+            removeNoise(evnt);
+            break;
     }
 };
 
@@ -24,8 +27,6 @@ function canvasToBase64(canvas) {
 
 async function createImage(evnt) {
     const sBitmap = evnt.data.sBitmap;
-    const imageWidth = evnt.data.imageWidth;
-    const imageHeight = evnt.data.imageHeight;
     const gamma = evnt.data.gamma;
     const outlineAlgorithm = evnt.data.outlineAlgorithm;
     const lowThreshold = evnt.data.lowThreshold;
@@ -35,9 +36,9 @@ async function createImage(evnt) {
     const needColoredAreas = evnt.data.needColoredAreas;
     const baseColoredAreasAverageColor = evnt.data.baseColoredAreasAverageColor;
 
-    const sCanvas = new OffscreenCanvas(imageWidth, imageHeight);
+    const sCanvas = new OffscreenCanvas(sBitmap.width, sBitmap.height);
     const sContext = sCanvas.getContext("2d", { willReadFrequently: true });
-    const dCanvas = new OffscreenCanvas(imageWidth, imageHeight);
+    const dCanvas = new OffscreenCanvas(sBitmap.width, sBitmap.height);
     const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
     sContext.drawImage(sBitmap, 0, 0, sCanvas.width, sCanvas.height);
     sBitmap.close();
@@ -74,4 +75,17 @@ async function createImage(evnt) {
     postMessage({sBase64, dBase64});
 }
 
+async function removeNoise(evnt) {
+    const dBitmap = evnt.data.dBitmap;
+    const dCanvas = new OffscreenCanvas(dBitmap.width, dBitmap.height);
+    const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
+    dContext.drawImage(dBitmap, 0, 0, dCanvas.width, dCanvas.height);
+    dBitmap.close();
 
+    const imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
+    medianFilter(imageData);
+    dContext.putImageData(imageData, 0, 0);
+
+    const dBase64 = await canvasToBase64(dCanvas);
+    postMessage({dBase64});
+}
