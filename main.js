@@ -9,6 +9,7 @@ const App = {
     data() {
         return {
             // UI制御系
+            isMobile: false,
             isProcessing: false,
             moon: "🌑",
 
@@ -28,6 +29,11 @@ const App = {
         };
     },
     created() {
+        const mobileRegex = /iphone;|(android|nokia|blackberry|bb10;).+mobile|android.+fennec|opera.+mobi|windows phone|symbianos/i;
+        const isMobileByUa = mobileRegex.test(navigator.userAgent);;
+        const isMobileByClientHint = navigator.userAgentData && navigator.userAgentData.mobile;
+        this.isMobile = isMobileByUa || isMobileByClientHint;
+
         this.image = new Image();
         this.image.src = "./images/3.jpg";
         this.image.onload = () => {

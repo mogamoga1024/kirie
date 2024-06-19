@@ -162,6 +162,12 @@
     </div>
 
     <div style="margin-top: 16px;">
+      <template v-if="isMobile">
+        画像は長押しでダウンロードできます。<br>
+      </template>
+      <template v-else>
+        画像は右クリックでダウンロードできます。<br>
+      </template>
       輪郭が少ない場合は輪郭黒の値を大きくしてください。<br>
       細かい調整はペイントソフトでも使って…
     </div>
