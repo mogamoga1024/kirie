@@ -180,6 +180,7 @@ const App = {
             };
 
             worker.postMessage({
+                method: "createImage",
                 sBitmap,
                 imageWidth,
                 imageHeight,

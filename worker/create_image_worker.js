@@ -1,6 +1,28 @@
 importScripts("../image_editor.js");
 
-onmessage = async evnt => {
+onmessage = evnt => {
+    switch (evnt.data.method) {
+        case "createImage":
+            createImage(evnt);
+            break;
+    }
+};
+
+function canvasToBase64(canvas) {
+    return new Promise(async resolve => {
+        const fr = new FileReader();
+        fr.onload = () => {
+            resolve(fr.result);
+        };
+        fr.onerror = () => {
+            resolve("");
+        };
+        const blob = await canvas.convertToBlob();
+        fr.readAsDataURL(blob);
+    });
+}
+
+async function createImage(evnt) {
     const sBitmap = evnt.data.sBitmap;
     const imageWidth = evnt.data.imageWidth;
     const imageHeight = evnt.data.imageHeight;
@@ -50,18 +72,6 @@ onmessage = async evnt => {
 
     const [sBase64, dBase64] = await Promise.all([canvasToBase64(sCanvas), canvasToBase64(dCanvas)]);
     postMessage({sBase64, dBase64});
-};
-
-function canvasToBase64(canvas) {
-    return new Promise(async resolve => {
-        const fr = new FileReader();
-        fr.onload = () => {
-            resolve(fr.result);
-        };
-        fr.onerror = () => {
-            resolve("");
-        };
-        const blob = await canvas.convertToBlob();
-        fr.readAsDataURL(blob);
-    });
 }
+
+
