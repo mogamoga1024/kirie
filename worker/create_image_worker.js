@@ -1,4 +1,5 @@
 importScripts("../image_editor.js");
+importScripts("https://cdn.jsdelivr.net/npm/imagetracerjs@1.2.6/imagetracer_v1.2.6.min.js");
 
 onmessage = evnt => {
     switch (evnt.data.method) {
@@ -10,6 +11,9 @@ onmessage = evnt => {
             break;
         case "thickenLines":
             wkThickenLines(evnt);
+            break;
+        case "convertToSVG":
+            wkConvertToSVG(evnt);
             break;
     }
 };
@@ -103,6 +107,23 @@ async function wkThickenLines(evnt) {
     const imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
     thickenLines(imageData, 1);
     dContext.putImageData(imageData, 0, 0);
+
+    const dBase64 = await canvasToBase64(dCanvas);
+    postMessage({dBase64});
+}
+
+async function wkConvertToSVG(evnt) {
+    const dBitmap = evnt.data.dBitmap;
+    const dCanvas = new OffscreenCanvas(dBitmap.width, dBitmap.height);
+    const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
+    dContext.drawImage(dBitmap, 0, 0, dCanvas.width, dCanvas.height);
+    dBitmap.close();
+
+    const imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
+    const strSvg = convertToSVG(imageData);
+    // const v = canvg.Canvg.fromString(dContext, strSvg);
+    // v.render();
+    dContext.putImageData(imageData, 0, 0);// いる？
 
     const dBase64 = await canvasToBase64(dCanvas);
     postMessage({dBase64});
