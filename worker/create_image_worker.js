@@ -1,6 +1,6 @@
 importScripts("../image_editor.js");
 
-onmessage = evnt => {
+onmessage = async evnt => {
     const sBitmap = evnt.data.sBitmap;
     const imageWidth = evnt.data.imageWidth;
     const imageHeight = evnt.data.imageHeight;
@@ -47,4 +47,23 @@ onmessage = evnt => {
 
         dContext.drawImage(tmpCanvas, 0, 0);
     }
+
+    const [sBase64, dBase64] = await Promise.all([canvasToBase64(sCanvas), canvasToBase64(dCanvas)]);
+
+    console.log("sBase64: " + sBase64);
+    console.log("dBase64: " + dBase64);
 };
+
+function canvasToBase64(canvas) {
+    return new Promise(async resolve => {
+        const fr = new FileReader();
+        fr.onload = () => {
+            resolve(fr.result);
+        };
+        fr.onerror = () => {
+            resolve("");
+        };
+        const blob = await canvas.convertToBlob();
+        fr.readAsDataURL(blob);
+    });
+}
