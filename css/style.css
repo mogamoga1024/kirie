@@ -153,7 +153,7 @@ input {
   word-break: break-all;
 }
 
-.canvas-container {
+.image-container {
   margin-top: 16px;
 }
 
@@ -161,7 +161,7 @@ input {
   font-weight: bold;
 }
 
-canvas {
+img {
   display: block;
   width: 100%;
   border: 1px solid black;
