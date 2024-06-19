@@ -22,7 +22,7 @@ const App = {
             outlineAlgorithm: "sobelFilter",
             lowThreshold: 70,
             highThreshold: 70,
-            baseOutlineAverageColor: 100,
+            baseOutlineAverageColor: 180,
             baseColoredAreasAverageColor: 100,
             needColoredAreas: true,
             gamma: 1.0,
@@ -35,9 +35,10 @@ const App = {
         this.isMobile = isMobileByUa || isMobileByClientHint;
 
         this.image = new Image();
-        this.image.src = "./images/3.jpg";
+        this.image.src = "./ぼっさん.png";
+        // this.image.src = "./images/3.jpg";
         this.image.onload = () => {
-            this.imageFileName = "test";
+            this.imageFileName = "未選択";
             this.imageWidth = this.image.width;
             this.drawImage();
         };
@@ -195,6 +196,8 @@ const App = {
             worker.onmessage = e => {
                 this.$refs.srcImage.style.maxWidth = imageWidth + "px";
                 this.$refs.dstImage.style.maxWidth = imageWidth + "px";
+                this.$refs.srcImage.style.aspectRatio = "";
+                this.$refs.dstImage.style.aspectRatio = "";
                 this.$refs.srcImage.src = e.data.sBase64;
                 this.$refs.dstImage.src = e.data.dBase64;
                 worker?.terminate();
