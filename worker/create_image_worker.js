@@ -42,6 +42,9 @@ async function createImage(evnt) {
     gammaCorrection(imageData1, gamma);
     sContext.putImageData(imageData1, 0, 0);
 
+    // ノイズ除去
+    medianFilter(imageData1);
+
     // 輪郭抽出 & モノクロ
     switch (outlineAlgorithm) {
         case "sobelFilter": sobelFilter(imageData1); break;
