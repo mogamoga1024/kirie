@@ -18,20 +18,6 @@ onmessage = evnt => {
     }
 };
 
-function canvasToBase64(canvas) {
-    return new Promise(async resolve => {
-        const fr = new FileReader();
-        fr.onload = () => {
-            resolve(fr.result);
-        };
-        fr.onerror = () => {
-            resolve("");
-        };
-        const blob = await canvas.convertToBlob();
-        fr.readAsDataURL(blob);
-    });
-}
-
 async function createImage(evnt) {
     const sBitmap = evnt.data.sBitmap;
     const gamma = evnt.data.gamma;
@@ -121,10 +107,5 @@ async function wkConvertToSVG(evnt) {
 
     const imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
     const strSvg = convertToSVG(imageData);
-    // const v = canvg.Canvg.fromString(dContext, strSvg);
-    // v.render();
-    dContext.putImageData(imageData, 0, 0);// いる？
-
-    const dBase64 = await canvasToBase64(dCanvas);
-    postMessage({dBase64});
+    postMessage({strSvg});
 }

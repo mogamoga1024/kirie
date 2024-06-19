@@ -176,11 +176,6 @@ const App = {
         drawImage() {
             this.isProcessing = true;
 
-            if (worker !== null) {
-                worker.terminate();
-                worker = null;
-            }
-
             const imageWidth = this.imageWidth;
             const imageHeight = this.image.height * this.imageWidth / this.image.width;
 
@@ -189,16 +184,19 @@ const App = {
             sContext.drawImage(this.image, 0, 0, sCanvas.width, sCanvas.height);
             const sBitmap = sCanvas.transferToImageBitmap();
 
+            worker?.terminate();
             worker = new Worker("./worker/create_image_worker.js");
             worker.onmessage = e => {
                 this.$refs.srcImage.style.maxWidth = imageWidth + "px";
                 this.$refs.dstImage.style.maxWidth = imageWidth + "px";
                 this.$refs.srcImage.src = e.data.sBase64;
                 this.$refs.dstImage.src = e.data.dBase64;
+                worker?.terminate();
                 this.isProcessing = false;
             };
             worker.onerror = e => {
                 alert("エラーが発生しました。");
+                worker?.terminate();
                 this.isProcessing = false;
             };
 
@@ -231,10 +229,12 @@ const App = {
             worker = new Worker("./worker/create_image_worker.js");
             worker.onmessage = e => {
                 this.$refs.dstImage.src = e.data.dBase64;
+                worker?.terminate();
                 this.isProcessing = false;
             };
             worker.onerror = e => {
                 alert("エラーが発生しました。");
+                worker?.terminate();
                 this.isProcessing = false;
             };
 
@@ -260,10 +260,12 @@ const App = {
             worker = new Worker("./worker/create_image_worker.js");
             worker.onmessage = e => {
                 this.$refs.dstImage.src = e.data.dBase64;
+                worker?.terminate();
                 this.isProcessing = false;
             };
             worker.onerror = e => {
                 alert("エラーが発生しました。");
+                worker?.terminate();
                 this.isProcessing = false;
             };
 
@@ -287,12 +289,19 @@ const App = {
             const dBitmap = dCanvas.transferToImageBitmap();
 
             worker = new Worker("./worker/create_image_worker.js");
-            worker.onmessage = e => {
-                this.$refs.dstImage.src = e.data.dBase64;
+            worker.onmessage = async e => {
+                const preset = canvg.presets.offscreen();
+                const v = await canvg.Canvg.fromString(dContext, e.data.strSvg, preset);
+                await v.render();
+                const dBase64 = await canvasToBase64(dCanvas);
+                
+                this.$refs.dstImage.src = dBase64;
+                worker?.terminate();
                 this.isProcessing = false;
             };
             worker.onerror = e => {
                 alert("エラーが発生しました。");
+                worker?.terminate();
                 this.isProcessing = false;
             };
 

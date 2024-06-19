@@ -709,3 +709,17 @@ function gammaCorrection(imageData, gamma) {
         data[i + 2] = 255 * Math.pow(data[i + 2] / 255, gammaCorrection);
     }
 }
+
+function canvasToBase64(canvas) {
+    return new Promise(async resolve => {
+        const fr = new FileReader();
+        fr.onload = () => {
+            resolve(fr.result);
+        };
+        fr.onerror = () => {
+            resolve("");
+        };
+        const blob = await canvas.convertToBlob();
+        fr.readAsDataURL(blob);
+    });
+}
