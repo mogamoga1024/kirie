@@ -35,7 +35,7 @@ const App = {
         this.isMobile = isMobileByUa || isMobileByClientHint;
 
         this.image = new Image();
-        this.image.src = "./ぼっさん.png";
+        this.image.src = "./kawaii.png";
         // this.image.src = "./images/3.jpg";
         this.image.onload = () => {
             this.imageFileName = "未選択";
