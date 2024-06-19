@@ -153,7 +153,8 @@ const App = {
 
         drawImage() {
             if (worker !== null) {
-                worker.terminate(); worker = null;
+                worker.terminate();
+                worker = null;
             }
 
             const imageWidth = this.imageWidth;
