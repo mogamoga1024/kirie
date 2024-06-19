@@ -199,3 +199,16 @@ canvas {
   display: flex;
   column-gap: 8px;
 }
+
+#processing {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+
+  font-size: 30px;
+  font-weight: bold;
+
+  color: red;
+
+  z-index: 100;
+}

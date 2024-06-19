@@ -10,7 +10,7 @@ const App = {
         return {
             // UI制御系
             isProcessing: false,
-            moon: "🌕",
+            moon: "🌑",
 
             // ロジック系
             imageFileName: "",
@@ -35,6 +35,23 @@ const App = {
             this.imageWidth = this.image.width;
             this.drawImage();
         };
+    },
+    watch: {
+        isProcessing(newVal) {
+            if (newVal) {
+                const moons = ["🌑", "🌘", "🌗", "🌖", "🌕", "🌔", "🌓", "🌒"];
+                let moonIndex = 0;
+                this.moon = moons[moonIndex];
+                const moonTimerId = setInterval(() => {
+                    if (!this.isProcessing) {
+                        clearInterval(moonTimerId);
+                        return;
+                    }
+                    moonIndex = (moonIndex + 1) % moons.length;
+                    this.moon = moons[moonIndex];
+                }, 100);
+            }
+        }
     },
     methods: {
         onChangeInputImageFile(e) {
