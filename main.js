@@ -1,5 +1,6 @@
 
 let isLoadingInputImage = false;
+let worker = null;
 
 const App = {
     components: {
@@ -27,7 +28,7 @@ const App = {
         this.image.onload = () => {
             this.imageFileName = "test";
             this.imageWidth = this.image.width;
-            this.drawImage(true);
+            this.drawImage();
         };
     },
     methods: {
@@ -62,7 +63,7 @@ const App = {
                 this.imageFileName = imageFile.name;
                 this.imageWidth = this.image.width;
 
-                this.drawImage(true);
+                this.drawImage();
 
                 URL.revokeObjectURL(this.image.src);
                 isLoadingInputImage = false;
@@ -122,7 +123,7 @@ const App = {
 
         onChangeGamma() {
             if (this.image !== null) {
-                this.drawImage(true);
+                this.drawImage();
             }
         },
 
@@ -151,19 +152,38 @@ const App = {
         },
 
         drawImage(hasImageChanged = false) {
-            const sCanvas = this.$refs.srcCanvas;
-            const sContext = sCanvas.getContext("2d", { willReadFrequently: true });
-            const dCanvas = this.$refs.dstCanvas;
-            const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
-
-            if (hasImageChanged) {
-                const imageWidth = this.imageWidth;
-                const imageHeight = this.image.height * this.imageWidth / this.image.width;
-                sCanvas.style.maxWidth = dCanvas.style.maxWidth = `${imageWidth}px`;
-                sCanvas.width = dCanvas.width = imageWidth;
-                sCanvas.height = dCanvas.height = imageHeight;
-                sContext.drawImage(this.image, 0, 0, sCanvas.width, sCanvas.height);
+            if (worker !== null) {
+                worker.terminate(); worker = null;
             }
+
+            const imageWidth = this.imageWidth;
+            const imageHeight = this.image.height * this.imageWidth / this.image.width;
+
+            const sCanvas = new OffscreenCanvas(imageWidth, imageHeight);
+            const sContext = sCanvas.getContext("2d", { willReadFrequently: true });
+            sContext.drawImage(this.image, 0, 0, sCanvas.width, sCanvas.height);
+            const sBitmap = sCanvas.transferToImageBitmap();
+
+            worker = new Worker("./worker/create_image_worker.js");
+            worker.onmessage = e => {
+                // todo
+            };
+            worker.onerror = e => {
+                // todo
+            };
+
+            worker.postMessage({sBitmap, imageWidth, imageHeight}, [sBitmap]);
+
+            return;
+
+            // if (hasImageChanged) {
+            //     const imageWidth = this.imageWidth;
+            //     const imageHeight = this.image.height * this.imageWidth / this.image.width;
+            //     sCanvas.style.maxWidth = dCanvas.style.maxWidth = `${imageWidth}px`;
+            //     sCanvas.width = dCanvas.width = imageWidth;
+            //     sCanvas.height = dCanvas.height = imageHeight;
+            //     sContext.drawImage(this.image, 0, 0, sCanvas.width, sCanvas.height);
+            // }
 
             const imageData1 = sContext.getImageData(0, 0, sCanvas.width, sCanvas.height);
             
