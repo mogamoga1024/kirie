@@ -250,15 +250,27 @@ const App = {
             }
             this.isProcessing = true;
 
-            const dCanvas = this.$refs.dstCanvas;
+            const imageWidth = this.$refs.dstImage.naturalWidth;
+            const imageHeight = this.$refs.dstImage.naturalHeight;
+            const dCanvas = new OffscreenCanvas(imageWidth, imageHeight);
             const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
+            dContext.drawImage(this.$refs.dstImage, 0, 0, dCanvas.width, dCanvas.height);
+            const dBitmap = dCanvas.transferToImageBitmap();
 
-            const imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
-            thickenLines(imageData, 1);
+            worker = new Worker("./worker/create_image_worker.js");
+            worker.onmessage = e => {
+                this.$refs.dstImage.src = e.data.dBase64;
+                this.isProcessing = false;
+            };
+            worker.onerror = e => {
+                alert("エラーが発生しました。");
+                this.isProcessing = false;
+            };
 
-            dContext.putImageData(imageData, 0, 0);
-
-            this.isProcessing = false;
+            worker.postMessage({
+                method: "thickenLines",
+                dBitmap
+            }, [dBitmap]);
         },
 
         convertToSVG() {

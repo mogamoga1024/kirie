@@ -8,6 +8,9 @@ onmessage = evnt => {
         case "removeNoise":
             removeNoise(evnt);
             break;
+        case "thickenLines":
+            wkThickenLines(evnt);
+            break;
     }
 };
 
@@ -84,6 +87,21 @@ async function removeNoise(evnt) {
 
     const imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
     medianFilter(imageData);
+    dContext.putImageData(imageData, 0, 0);
+
+    const dBase64 = await canvasToBase64(dCanvas);
+    postMessage({dBase64});
+}
+
+async function wkThickenLines(evnt) {
+    const dBitmap = evnt.data.dBitmap;
+    const dCanvas = new OffscreenCanvas(dBitmap.width, dBitmap.height);
+    const dContext = dCanvas.getContext("2d", { willReadFrequently: true });
+    dContext.drawImage(dBitmap, 0, 0, dCanvas.width, dCanvas.height);
+    dBitmap.close();
+
+    const imageData = dContext.getImageData(0, 0, dCanvas.width, dCanvas.height);
+    thickenLines(imageData, 1);
     dContext.putImageData(imageData, 0, 0);
 
     const dBase64 = await canvasToBase64(dCanvas);
