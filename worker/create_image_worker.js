@@ -56,7 +56,7 @@ async function createImage(evnt) {
     dContext.putImageData(imageData1, 0, 0);
 
     // 元絵全体のモノクロ
-    if (needColoredAreas) {
+    if (shouldBinarize && needColoredAreas) {
         const imageData2 = sContext.getImageData(0, 0, sCanvas.width, sCanvas.height);
         monochrome(imageData2, baseColoredAreasAverageColor, true, shouldBinarize);
 
