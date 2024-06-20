@@ -38,6 +38,8 @@ const App = {
         const isMobileByClientHint = navigator.userAgentData && navigator.userAgentData.mobile;
         this.isMobile = isMobileByUa || isMobileByClientHint;
 
+        this.editDirection = this.isMobile ? "vertical" : "horizontal";
+
         this.image = new Image();
         this.image.src = "./kawaii.png";
         // this.image.src = "./images/3.jpg";
