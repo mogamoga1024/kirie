@@ -62,7 +62,7 @@ input {
 .radio {
   display: inline-block;
   height: 25px;
-  line-height: 25px;
+  /* line-height: 25px; */
   padding: 4px 8px;
   border: 2px solid #007BAE;
   border-right-width: 0;
@@ -136,6 +136,7 @@ input {
 
 .input-file-container {
   display: flex;
+  margin-top: 16px;
   align-items: center;
   flex-wrap: nowrap;
 }
