@@ -418,49 +418,6 @@ function convertToSVG(imageData) {
     return ImageTracer.imagedataToSVG(imageData, options);
 }
 
-// function thickenLines(imageData, thickness) {
-//     const data = imageData.data;
-//     const width = imageData.width;
-//     const height = imageData.height;
-//     const blackData = new Array(width * height);
-
-//     for (let y = 0; y < height; y++) {
-//         for (let x = 0; x < width; x++) {
-//             const index = (y * width + x) * 4;
-//             if (data[index] === 0) {
-//                 for (let dy = -thickness; dy <= thickness; dy++) {
-//                     for (let dx = -thickness; dx <= thickness; dx++) {
-//                         const newX = x + dx;
-//                         const newY = y + dy;
-//                         if (newX >= 0 && newX < width && newY >= 0 && newY < height) {
-//                             const newIndex = newY * width + newX;
-//                             blackData[newIndex] = true;
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-//     }
-
-//     for (let y = 0; y < height; y++) {
-//         for (let x = 0; x < width; x++) {
-//             const blackIndex = y * width + x;
-//             const index = blackIndex * 4;
-//             if (blackData[blackIndex]) {
-//                 data[index] = 0;
-//                 data[index + 1] = 0;
-//                 data[index + 2] = 0;
-//                 data[index + 3] = 255;
-//             } else {
-//                 data[index] = 255;
-//                 data[index + 1] = 255;
-//                 data[index + 2] = 255;
-//                 data[index + 3] = 255;
-//             }
-//         }
-//     }
-// }
-
 function thickenLines(imageData, thickness) {
     const data = imageData.data;
     const width = imageData.width;
@@ -471,29 +428,28 @@ function thickenLines(imageData, thickness) {
     for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
             const index = (y * width + x) * 4;
-            const avg = (data[index] + data[index + 1] + data[index + 2]) / 3;
-            pixelData.push({ x, y, avg, r: data[index], g: data[index + 1], b: data[index + 2], a: data[index + 3] });
+            pixelData.push({ x, y, value: data[index] });
         }
     }
 
     // 明るさの降順にソート
-    pixelData.sort((a, b) => b.avg - a.avg);
+    pixelData.sort((a, b) => b.value - a.value);
 
     // blackDataを初期化
     const blackData = new Array(width * height).fill(null);
 
     // 濃い順に太くする処理
     for (let i = 0; i < pixelData.length; i++) {
-        const { x, y, avg, r, g, b, a } = pixelData[i];
-        if (avg < 255) {  // 白ではないピクセル
+        const { x, y, value } = pixelData[i];
+        if (value < 255) {  // 白ではないピクセル
             for (let dy = -thickness; dy <= thickness; dy++) {
                 for (let dx = -thickness; dx <= thickness; dx++) {
                     const newX = x + dx;
                     const newY = y + dy;
                     if (newX >= 0 && newX < width && newY >= 0 && newY < height) {
                         const newIndex = newY * width + newX;
-                        if (blackData[newIndex] === null || blackData[newIndex].avg > avg) {
-                            blackData[newIndex] = { r, g, b, a, avg };
+                        if (blackData[newIndex] === null || blackData[newIndex] > value) {
+                            blackData[newIndex] = value;
                         }
                     }
                 }
@@ -506,18 +462,14 @@ function thickenLines(imageData, thickness) {
         for (let x = 0; x < width; x++) {
             const blackIndex = y * width + x;
             const index = blackIndex * 4;
-            if (blackData[blackIndex]) {
-                data[index] = blackData[blackIndex].r;
-                data[index + 1] = blackData[blackIndex].g;
-                data[index + 2] = blackData[blackIndex].b;
-                data[index + 3] = blackData[blackIndex].a;
+            if (blackData[blackIndex] !== null) {
+                data[index] = blackData[blackIndex];
+                data[index + 1] = blackData[blackIndex];
+                data[index + 2] = blackData[blackIndex];
             }
         }
     }
 }
-
-
-
 
 function gammaCorrection(imageData, gamma) {
     const data = imageData.data;
