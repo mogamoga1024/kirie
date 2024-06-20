@@ -207,7 +207,10 @@
       </span>
       輪郭が少ない場合は輪郭黒の値を大きくしてください。<br>
       2値化なしで有色部がなくなるのは仕様です。<br>
-      細かい調整はペイントソフトでも使って…
+      細かい調整はペイントソフトでも使って…<br>
+      <template v-if="!isMobile">
+        ちなみに画像はCtrl+Vの貼り付けやドラッグ&ドロップでも入力できます。
+      </template>
     </div>
 
     <div id="processing" v-show="isProcessing">

@@ -75,13 +75,13 @@ const App = {
                 this.updateImageData(blob.name);
                 this.drawImage();
                 URL.revokeObjectURL(blobURL);
-                isLoadingInputImage = true;
+                isLoadingInputImage = false;
             };
             this.image.onerror = () => {
                 alert("画像の読み込みに失敗しました。");
                 URL.revokeObjectURL(blobURL);
                 this.image = null;
-                isLoadingInputImage = true;
+                isLoadingInputImage = false;
             };
             this.image.src = blobURL;
         }, false);
@@ -107,18 +107,18 @@ const App = {
                 this.image.onload = () => {
                     this.updateImageData(file.name);
                     this.drawImage();
-                    isLoadingInputImage = true;
+                    isLoadingInputImage = false;
                 };
                 this.image.onerror = () => {
                     alert("画像の読み込みに失敗しました。");
                     this.image = null;
-                    isLoadingInputImage = true;
+                    isLoadingInputImage = false;
                 };
                 this.image.src = e.target.result;
             }
             reader.onerror = () => {
                 alert("画像の読み込みに失敗しました。");
-                isLoadingInputImage = true;
+                isLoadingInputImage = false;
             };
             reader.readAsDataURL(file);
         });
