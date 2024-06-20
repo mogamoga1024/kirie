@@ -2,6 +2,8 @@
 let isLoadingInputImage = false;
 let worker = null;
 
+const maxArea = 1280 * 720;
+
 const App = {
     components: {
         PlusMinusInputNumbur
@@ -17,7 +19,7 @@ const App = {
             imageFileName: "",
             image: null,
             imageWidth: 0,
-            imageWidthMin: 10,
+            imageWidthMin: 100,
             imageWidthMax: 5000,
             outlineAlgorithm: "sobelFilter",
             lowThreshold: 70,
@@ -39,8 +41,7 @@ const App = {
         this.image.src = "./kawaii.png";
         // this.image.src = "./images/3.jpg";
         this.image.onload = () => {
-            this.imageFileName = "未選択";
-            this.imageWidth = this.image.width;
+            this.updateImageData("未選択");
             this.drawImage();
         };
     },
@@ -79,20 +80,7 @@ const App = {
 
             this.image = new Image();
             this.image.onload = () => {
-                if (this.image.width < this.imageWidthMin || this.image.width > this.imageWidthMax) {
-                    alert(`画像の幅は${this.imageWidthMin}px以上${this.imageWidthMax}px以下の必要があります。`);
-                    if (this.imageFileName === "") {
-                        this.$refs.inputImageFile.value = "";
-                        this.image = null;
-                        this.imageWidth = 0;
-                    }
-                    
-                    return;
-                }
-
-                this.imageFileName = imageFile.name;
-                this.imageWidth = this.image.width;
-
+                this.updateImageData(imageFile.name);
                 this.drawImage();
 
                 URL.revokeObjectURL(this.image.src);
@@ -186,6 +174,21 @@ const App = {
             if (this.image !== null) {
                 this.drawImage();
             }
+        },
+
+        updateImageData(fileName) {
+            const imageHeightRate = this.image.height / this.image.width;
+            this.imageWidthMax = Math.floor(Math.sqrt(maxArea / imageHeightRate));
+            if (this.image.width < this.imageWidthMin) {
+                this.imageWidth = this.imageWidthMin;
+            }
+            else if (this.image.width > this.imageWidthMax) {
+                this.imageWidth = this.imageWidthMax;
+            }
+            else {
+                this.imageWidth = this.image.width;
+            }
+            this.imageFileName = fileName;
         },
 
         drawImage() {
