@@ -168,7 +168,15 @@
     </div>
 
     <div class="image-container">
-      <div id="dst-title">加工画像</div>
+      <div>
+        <div id="dst-title">加工画像</div>
+        <div v-show="!shouldBinarize"
+             class="btn action-btn"
+             style="display: inline-block; margin-left: 16px;"
+             @click="onClickDstImageToSrcImage">
+          無加工画像にセット
+        </div>
+      </div>
       <img ref="dstImage" style="max-width: 600px; aspect-ratio: 600 / 444;">
     </div>
 
@@ -181,9 +189,10 @@
           画像は右クリックでダウンロードできます。<br>
         </template>
       </span>
+      細かい調整はペイントソフトでも使って…<br>
       輪郭が少ない場合は輪郭黒の値を大きくしてください。<br>
       2値化ありで有色部がなくなるのは仕様です。<br>
-      細かい調整はペイントソフトでも使って…
+      2値化なしの「無加工画像にセット」ボタンは加工画像を2値化したい場合に使います。<br>
     </div>
 
     <div id="processing" v-show="isProcessing">
