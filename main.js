@@ -47,6 +47,45 @@ const App = {
             this.updateImageData("未選択");
             this.drawImage();
         };
+
+        window.addEventListener("paste", e => {
+            e.preventDefault();
+
+            if (isLoadingInputImage) {
+                return;
+            }
+            isLoadingInputImage = true;
+            
+            const items = e.clipboardData.items;
+            let imageItem = null;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf("image/") !== -1) {
+                    imageItem = items[i];
+                    break;
+                }
+            }
+            if (imageItem === null) {
+                return;
+            }
+        
+            const blob = imageItem.getAsFile();
+            const blobURL = URL.createObjectURL(blob);
+            this.image = new Image();
+        
+            this.image.onload = () => {
+                this.updateImageData(blob.name);
+                this.drawImage();
+                URL.revokeObjectURL(blobURL);
+                isLoadingInputImage = true;
+            };
+            this.image.onerror = () => {
+                alert("画像の読み込みに失敗しました。");
+                URL.revokeObjectURL(blobURL);
+                this.image = null;
+                isLoadingInputImage = true;
+            };
+            this.image.src = blobURL;
+        }, false);
     },
     watch: {
         isProcessing(newVal) {
@@ -85,7 +124,6 @@ const App = {
             this.image.onload = () => {
                 this.updateImageData(imageFile.name);
                 this.drawImage();
-
                 URL.revokeObjectURL(this.image.src);
                 isLoadingInputImage = false;
             };
