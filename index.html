@@ -45,151 +45,155 @@
       </div>
     </div>
 
-    <div class="image-container">
-      <div id="src-title">無加工画像</div>
-      <img ref="srcImage" style="max-width: 600px; aspect-ratio: 600 / 444;">
-    </div>
-
-    <div id="setting">
-      <div class="item">
-        <div class="name">幅</div>
-        <div class="input">
-          <plus-minus-input-numbur
-            :min="imageWidthMin"
-            :max="imageWidthMax"
-            v-model="imageWidth"
-            @change="onChangeImageWidth">
-        </div>
+    <div :class="{'edit-horizontal': editDirection === 'horizontal'}"
+         :style="{marginTop: editDirection === 'vertical' ? '0px' : '16px'}">
+      <div :style="{marginTop: editDirection === 'vertical' ? '16px' : '0px'}">
+        <div id="src-title">無加工画像</div>
+        <img ref="srcImage" style="max-width: 600px; aspect-ratio: 600 / 444;">
       </div>
-
-      <div class="item">
-        <div class="name">
-          <div>輪郭検出法</div>
+  
+      <div id="setting"
+           :style="{marginTop: editDirection === 'vertical' ? '24px' : '28px'}">
+        <div class="item">
+          <div class="name">幅</div>
+          <div class="input">
+            <plus-minus-input-numbur
+              :min="imageWidthMin"
+              :max="imageWidthMax"
+              v-model="imageWidth"
+              @change="onChangeImageWidth">
+          </div>
         </div>
-        <div class="input">
-          <select v-model="outlineAlgorithm" @change="onChangeOutlineAlgorithm">
-            <option :value="'sobelFilter'">SobelFilter</option>
-            <option :value="'prewittFilter'">PrewittFilter</option>
-            <option :value="'cannyEdgeDetection'">Canny</option>
-            <option :value="'laplacianFilter'">LaplacianFilter</option>
-          </select>
+  
+        <div class="item">
+          <div class="name">
+            <div>輪郭検出法</div>
+          </div>
+          <div class="input">
+            <select v-model="outlineAlgorithm" @change="onChangeOutlineAlgorithm">
+              <option :value="'sobelFilter'">SobelFilter</option>
+              <option :value="'prewittFilter'">PrewittFilter</option>
+              <option :value="'cannyEdgeDetection'">Canny</option>
+              <option :value="'laplacianFilter'">LaplacianFilter</option>
+            </select>
+          </div>
         </div>
-      </div>
-
-      <div class="item" v-show="outlineAlgorithm === 'cannyEdgeDetection'">
-        <div class="name">
-          <div>エッジ(低)</div>
-          <div class="hosoku">多:0-255:少</div>
+  
+        <div class="item" v-show="outlineAlgorithm === 'cannyEdgeDetection'">
+          <div class="name">
+            <div>エッジ(低)</div>
+            <div class="hosoku">多:0-255:少</div>
+          </div>
+          <div class="input">
+            <plus-minus-input-numbur
+              :min="0"
+              :max="255"
+              v-model="lowThreshold"
+              @change="onChangeLowThreshold">
+          </div>
         </div>
-        <div class="input">
-          <plus-minus-input-numbur
-            :min="0"
-            :max="255"
-            v-model="lowThreshold"
-            @change="onChangeLowThreshold">
+        <div class="item" v-show="outlineAlgorithm === 'cannyEdgeDetection'">
+          <div class="name">
+            <div>エッジ(高)</div>
+            <div class="hosoku">多:0-255:少</div>
+          </div>
+          <div class="input">
+            <plus-minus-input-numbur
+              :min="0"
+              :max="255"
+              v-model="highThreshold"
+              @change="onChangeHighThreshold">
+          </div>
         </div>
-      </div>
-      <div class="item" v-show="outlineAlgorithm === 'cannyEdgeDetection'">
-        <div class="name">
-          <div>エッジ(高)</div>
-          <div class="hosoku">多:0-255:少</div>
+  
+        <div class="item">
+          <div class="name">
+            <div>2値化</div>
+          </div>
+          <div class="input">
+            <div class="radio-wrapper">
+              <div class="radio" :class="{'selected': shouldBinarize}" @click="onClickShouldBinarize(true)">する</div>
+              <div class="radio" :class="{'selected': !shouldBinarize}" @click="onClickShouldBinarize(false)">しない</div>
+            </div>
+          </div>
         </div>
-        <div class="input">
-          <plus-minus-input-numbur
-            :min="0"
-            :max="255"
-            v-model="highThreshold"
-            @change="onChangeHighThreshold">
+  
+        <div class="item" v-show="shouldBinarize">
+          <div class="name">
+            <div>輪郭黒</div>
+            <div class="hosoku">少:0-255:多</div>
+          </div>
+          <div class="input">
+            <plus-minus-input-numbur
+              :min="0"
+              :max="255"
+              v-model="baseOutlineAverageColor"
+              @change="onChangeBaseOutlineAverageColor">
+          </div>
         </div>
-      </div>
-
-      <div class="item">
-        <div class="name">
-          <div>2値化</div>
+  
+        <div class="item" v-show="shouldBinarize">
+          <div class="name">
+            <div>有色部</div>
+          </div>
+          <div class="input">
+            <div class="radio-wrapper">
+              <div class="radio" :class="{'selected': needColoredAreas}" @click="onClickNeedColoredAreas(true)">いる</div>
+              <div class="radio" :class="{'selected': !needColoredAreas}" @click="onClickNeedColoredAreas(false)">いらない</div>
+            </div>
+          </div>
         </div>
-        <div class="input">
-          <div class="radio-wrapper">
-            <div class="radio" :class="{'selected': shouldBinarize}" @click="onClickShouldBinarize(true)">する</div>
-            <div class="radio" :class="{'selected': !shouldBinarize}" @click="onClickShouldBinarize(false)">しない</div>
+  
+        <div class="item" v-show="shouldBinarize && needColoredAreas">
+          <div class="name">
+            <div>有色黒</div>
+            <div class="hosoku">少:0-255:多</div>
+          </div>
+          <div class="input">
+            <plus-minus-input-numbur
+              :min="0"
+              :max="255"
+              v-model="baseColoredAreasAverageColor"
+              @change="onChangeBaseColoredAreasAverageColor">
+          </div>
+        </div>
+  
+        <div class="item">
+          <div class="name">
+            <div>ガンマ補正</div>
+            <div class="hosoku">濃:0-2:薄</div>
+          </div>
+          <div class="input">
+            <plus-minus-input-numbur
+              :min="0"
+              :max="2"
+              :step="0.02"
+              :decimal-places="3"
+              v-model="gamma"
+              @change="onChangeGamma">
           </div>
         </div>
       </div>
-
-      <div class="item" v-show="shouldBinarize">
-        <div class="name">
-          <div>輪郭黒</div>
-          <div class="hosoku">少:0-255:多</div>
+  
+      <div id="action-btn-container" v-show="editDirection === 'vertical'">
+        <div class="input-check-area">
+          <div class="btn action-btn" @click="onClickRemoveNoise">ノイズ除去</div>
         </div>
-        <div class="input">
-          <plus-minus-input-numbur
-            :min="0"
-            :max="255"
-            v-model="baseOutlineAverageColor"
-            @change="onChangeBaseOutlineAverageColor">
+        <div class="input-check-area">
+          <div class="btn action-btn" @click="onClickThickness">太く</div>
         </div>
-      </div>
-
-      <div class="item" v-show="shouldBinarize">
-        <div class="name">
-          <div>有色部</div>
+        <div class="input-check-area">
+          <div class="btn action-btn" @click="onClickConvertToSVG">溶かす</div>
         </div>
-        <div class="input">
-          <div class="radio-wrapper">
-            <div class="radio" :class="{'selected': needColoredAreas}" @click="onClickNeedColoredAreas(true)">いる</div>
-            <div class="radio" :class="{'selected': !needColoredAreas}" @click="onClickNeedColoredAreas(false)">いらない</div>
-          </div>
+        <div class="input-check-area">
+          <div class="btn action-btn" @click="onClickReset">リセット</div>
         </div>
       </div>
-
-      <div class="item" v-show="shouldBinarize && needColoredAreas">
-        <div class="name">
-          <div>有色黒</div>
-          <div class="hosoku">少:0-255:多</div>
-        </div>
-        <div class="input">
-          <plus-minus-input-numbur
-            :min="0"
-            :max="255"
-            v-model="baseColoredAreasAverageColor"
-            @change="onChangeBaseColoredAreasAverageColor">
-        </div>
+  
+      <div :style="{marginTop: editDirection === 'vertical' ? '16px' : '0px'}">
+        <div id="dst-title">加工画像</div>
+        <img ref="dstImage" style="max-width: 600px; aspect-ratio: 600 / 444;">
       </div>
-
-      <div class="item">
-        <div class="name">
-          <div>ガンマ補正</div>
-          <div class="hosoku">濃:0-2:薄</div>
-        </div>
-        <div class="input">
-          <plus-minus-input-numbur
-            :min="0"
-            :max="2"
-            :step="0.02"
-            :decimal-places="3"
-            v-model="gamma"
-            @change="onChangeGamma">
-        </div>
-      </div>
-    </div>
-
-    <div id="action-btn-container" v-show="editDirection === 'vertical'">
-      <div class="input-check-area">
-        <div class="btn action-btn" @click="onClickRemoveNoise">ノイズ除去</div>
-      </div>
-      <div class="input-check-area">
-        <div class="btn action-btn" @click="onClickThickness">太く</div>
-      </div>
-      <div class="input-check-area">
-        <div class="btn action-btn" @click="onClickConvertToSVG">溶かす</div>
-      </div>
-      <div class="input-check-area">
-        <div class="btn action-btn" @click="onClickReset">リセット</div>
-      </div>
-    </div>
-
-    <div class="image-container">
-      <div id="dst-title">加工画像</div>
-      <img ref="dstImage" style="max-width: 600px; aspect-ratio: 600 / 444;">
     </div>
 
     <div style="margin-top: 16px; margin-bottom: 24px;">

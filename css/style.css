@@ -154,8 +154,9 @@ input {
   word-break: break-all;
 }
 
-.image-container {
-  margin-top: 16px;
+.edit-horizontal {
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 #src-title, #dst-title {
@@ -170,8 +171,7 @@ img {
 
 #setting {
   display: flex;
-  width: fit-content;
-  margin-top: 24px;
+  width: 300px;
   flex-direction: column;
   row-gap: 8px;
 }
