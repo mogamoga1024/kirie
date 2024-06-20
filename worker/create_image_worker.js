@@ -24,7 +24,7 @@ async function createImage(evnt) {
     const outlineAlgorithm = evnt.data.outlineAlgorithm;
     const lowThreshold = evnt.data.lowThreshold;
     const highThreshold = evnt.data.highThreshold;
-
+    const shouldBinarize = evnt.data.shouldBinarize;
     const baseOutlineAverageColor = evnt.data.baseOutlineAverageColor;
     const needColoredAreas = evnt.data.needColoredAreas;
     const baseColoredAreasAverageColor = evnt.data.baseColoredAreasAverageColor;
@@ -52,13 +52,13 @@ async function createImage(evnt) {
         case "cannyEdgeDetection": cannyEdgeDetection(imageData1, lowThreshold, highThreshold); break;
         case "laplacianFilter": laplacianFilter(imageData1); break;
     }
-    monochrome(imageData1, baseOutlineAverageColor);
+    monochrome(imageData1, baseOutlineAverageColor, false, shouldBinarize);
     dContext.putImageData(imageData1, 0, 0);
 
     // 元絵全体のモノクロ
     if (needColoredAreas) {
         const imageData2 = sContext.getImageData(0, 0, sCanvas.width, sCanvas.height);
-        monochrome(imageData2, baseColoredAreasAverageColor, true);
+        monochrome(imageData2, baseColoredAreasAverageColor, true, shouldBinarize);
 
         const tmpCanvas = new OffscreenCanvas(sCanvas.width, sCanvas.height);
         const tmpContext = tmpCanvas.getContext("2d");

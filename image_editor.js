@@ -293,23 +293,33 @@ function medianFilter(imageData) {
 //     }
 // }
 
-function monochrome(imageData, baseOutlineAverageColor = 110, needTransparent = false) {
+function monochrome(imageData, baseOutlineAverageColor = 110, needTransparent = false, shouldBinarize = true) {
     const data = imageData.data;
     for (let i = 0; i < data.length; i += 4) {
         const r = data[i];
         const g = data[i + 1];
         const b = data[i + 2];
-        const value = 0.21 * r + 0.72 * g + 0.07 * b;
+        let value = 0.21 * r + 0.72 * g + 0.07 * b;
+
+        if (shouldBinarize) {
+            if (value <= baseOutlineAverageColor) {
+                value = 0; // 黒
+            }
+            else {
+                value = 255; // 白
+            }
+        }
+        
         if (needTransparent && data[i + 3] === 0) {
             data[i]     = 255;
             data[i + 1] = 255;
             data[i + 2] = 255;
             data[i + 3] = 255;
         }
-        else if (value <= baseOutlineAverageColor) {
-            data[i]     = 0;
-            data[i + 1] = 0;
-            data[i + 2] = 0;
+        else if (value !== 255) {
+            data[i]     = value;
+            data[i + 1] = value;
+            data[i + 2] = value;
             data[i + 3] = 255;
         }
         else {

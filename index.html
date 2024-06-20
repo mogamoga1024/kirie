@@ -85,6 +85,18 @@
 
       <div class="item">
         <div class="name">
+          <div>2値化</div>
+        </div>
+        <div class="input">
+          <div class="radio-wrapper">
+            <div class="radio" :class="{'selected': shouldBinarize}" @click="onClickShouldBinarize(true)">する</div>
+            <div class="radio" :class="{'selected': !shouldBinarize}" @click="onClickShouldBinarize(false)">しない</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="item" v-show="shouldBinarize">
+        <div class="name">
           <div>輪郭黒</div>
           <div class="hosoku">少:0-255:多</div>
         </div>
@@ -109,7 +121,7 @@
         </div>
       </div>
 
-      <div class="item" v-show="needColoredAreas">
+      <div class="item" v-show="shouldBinarize && needColoredAreas">
         <div class="name">
           <div>有色黒</div>
           <div class="hosoku">少:0-255:多</div>

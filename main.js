@@ -22,6 +22,7 @@ const App = {
             outlineAlgorithm: "sobelFilter",
             lowThreshold: 70,
             highThreshold: 70,
+            shouldBinarize: true,
             baseOutlineAverageColor: 180,
             baseColoredAreasAverageColor: 100,
             needColoredAreas: true,
@@ -131,6 +132,13 @@ const App = {
             }
         },
 
+        onClickShouldBinarize(shouldBinarize) {
+            this.shouldBinarize = shouldBinarize;
+            if (this.image !== null) {
+                this.drawImage();
+            }
+        },
+
         onChangeBaseOutlineAverageColor() {
             if (this.image !== null) {
                 this.drawImage();
@@ -216,6 +224,7 @@ const App = {
                 outlineAlgorithm: this.outlineAlgorithm,
                 lowThreshold: this.lowThreshold,
                 highThreshold: this.highThreshold,
+                shouldBinarize: this.shouldBinarize,
                 baseOutlineAverageColor: this.baseOutlineAverageColor,
                 needColoredAreas: this.needColoredAreas,
                 baseColoredAreasAverageColor: this.baseColoredAreasAverageColor,
