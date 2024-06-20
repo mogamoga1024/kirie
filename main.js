@@ -81,13 +81,12 @@ const App = {
             this.image.onload = () => {
                 if (this.image.width < this.imageWidthMin || this.image.width > this.imageWidthMax) {
                     alert(`画像の幅は${this.imageWidthMin}px以上${this.imageWidthMax}px以下の必要があります。`);
-                    URL.revokeObjectURL(this.image.src);
                     if (this.imageFileName === "") {
                         this.$refs.inputImageFile.value = "";
                         this.image = null;
                         this.imageWidth = 0;
                     }
-                    isLoadingInputImage = false;
+                    
                     return;
                 }
 
@@ -187,13 +186,6 @@ const App = {
             if (this.image !== null) {
                 this.drawImage();
             }
-        },
-
-        onClickDstImageToSrcImage() {
-            this.image = new Image();
-            this.image.src = this.$refs.dstImage.src;
-            this.$refs.srcImage.src = this.image.src;
-            this.imageFileName += "（加工）";
         },
 
         drawImage() {
