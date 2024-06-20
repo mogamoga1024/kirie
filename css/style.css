@@ -170,6 +170,7 @@ img {
 
 #setting {
   display: flex;
+  width: fit-content;
   margin-top: 24px;
   flex-direction: column;
   row-gap: 8px;

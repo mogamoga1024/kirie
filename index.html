@@ -30,6 +30,21 @@
       <div class="file-name">{{imageFileName}}</div>
     </div>
 
+    <div id="action-btn-container" v-show="editDirection === 'horizontal'">
+      <div class="input-check-area">
+        <div class="btn action-btn" @click="onClickRemoveNoise">ノイズ除去</div>
+      </div>
+      <div class="input-check-area">
+        <div class="btn action-btn" @click="onClickThickness">太く</div>
+      </div>
+      <div class="input-check-area">
+        <div class="btn action-btn" @click="onClickConvertToSVG">溶かす</div>
+      </div>
+      <div class="input-check-area">
+        <div class="btn action-btn" @click="onClickReset">リセット</div>
+      </div>
+    </div>
+
     <div class="image-container">
       <div id="src-title">無加工画像</div>
       <img ref="srcImage" style="max-width: 600px; aspect-ratio: 600 / 444;">
@@ -157,7 +172,7 @@
       </div>
     </div>
 
-    <div id="action-btn-container">
+    <div id="action-btn-container" v-show="editDirection === 'vertical'">
       <div class="input-check-area">
         <div class="btn action-btn" @click="onClickRemoveNoise">ノイズ除去</div>
       </div>
