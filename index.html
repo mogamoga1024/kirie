@@ -18,8 +18,8 @@
   <h1>画像から切り絵を生成するWebツール 兼 画像から輪郭を抽出するWebツール</h1>
   <div id="app" v-cloak>
     <div class="radio-wrapper" v-show="!isMobile">
-      <div class="radio" :class="{'selected': shouldBinarize}" @click="onClickShouldBinarize(true)">縦</div>
-      <div class="radio" :class="{'selected': !shouldBinarize}" @click="onClickShouldBinarize(false)">横</div>
+      <div class="radio" :class="{'selected': editDirection === 'vertical'}" @click="editDirection = 'vertical'">縦</div>
+      <div class="radio" :class="{'selected': editDirection === 'horizontal'}" @click="editDirection = 'horizontal'">横</div>
     </div>
 
     <div class="input-file-container">

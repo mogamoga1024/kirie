@@ -12,6 +12,7 @@ const App = {
         return {
             // UI制御系
             isMobile: false,
+            editDirection: "vertical", // vertical or horizontal
             isProcessing: false,
             moon: "🌑",
 
