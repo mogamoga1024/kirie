@@ -71,7 +71,6 @@ const App = {
             const blob = imageItem.getAsFile();
             const blobURL = URL.createObjectURL(blob);
             this.image = new Image();
-        
             this.image.onload = () => {
                 this.updateImageData(blob.name);
                 this.drawImage();
@@ -86,6 +85,43 @@ const App = {
             };
             this.image.src = blobURL;
         }, false);
+
+        window.addEventListener("dragover", e => {
+            e.preventDefault();
+        }, false);
+        
+        window.addEventListener("drop", e => {
+            e.preventDefault();
+        
+            if (isLoadingInputImage) {
+                return;
+            }
+            isLoadingInputImage = true;
+        
+            const file = e.dataTransfer.files[0];
+            if (file.type.indexOf("image/") === -1) return;
+        
+            const reader = new FileReader();
+            reader.onload = e => {
+                this.image = new Image();
+                this.image.onload = () => {
+                    this.updateImageData(file.name);
+                    this.drawImage();
+                    isLoadingInputImage = true;
+                };
+                this.image.onerror = () => {
+                    alert("画像の読み込みに失敗しました。");
+                    this.image = null;
+                    isLoadingInputImage = true;
+                };
+                this.image.src = e.target.result;
+            }
+            reader.onerror = () => {
+                alert("画像の読み込みに失敗しました。");
+                isLoadingInputImage = true;
+            };
+            reader.readAsDataURL(file);
+        });
     },
     watch: {
         isProcessing(newVal) {
