@@ -181,6 +181,7 @@ img {
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
+  column-gap: 16px;
 }
 
 .item .name {
