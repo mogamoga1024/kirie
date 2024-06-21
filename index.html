@@ -243,7 +243,7 @@
         <li v-if="!isMobile"><strong>編集方向の選択</strong>: 「縦」または「横」の編集方向を選択します。</li>
         <li><strong>加工ボタンの利用</strong>: ノイズ除去、太く、溶かすなどのアクションボタンをクリックして、画像を加工します。</li>
         <li><strong>輪郭検出法の選択と調整</strong>: 必要に応じて、輪郭検出法やエッジ検出の閾値を調整します。</li>
-        <li v-if="isMobile"><strong>画像のダウンロード</strong>: 加工した画像は右クリックでダウンロードできます。</li>
+        <li v-if="!isMobile"><strong>画像のダウンロード</strong>: 加工した画像は右クリックでダウンロードできます。</li>
         <li v-else><strong>画像のダウンロード</strong>: 加工した画像は長押しでダウンロードできます。</li>
       </ol>
 
