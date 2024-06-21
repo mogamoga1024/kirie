@@ -216,3 +216,13 @@ img {
 
   z-index: 100;
 }
+
+#poem {
+  h2 {
+    margin: 8px 0;
+  }
+
+  margin-top: 16px;
+  margin-bottom: 24px;
+  word-break: break-all;
+}
