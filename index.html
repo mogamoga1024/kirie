@@ -19,7 +19,7 @@
 <body>
   <h1>画像から切り絵を生成するWebツール 兼 画像から輪郭を抽出するWebツール</h1>
   <div id="app" v-cloak>
-    <div class="radio-wrapper" v-show="!isMobile">
+    <div class="radio-wrapper" v-if="!isMobile">
       <div class="radio" :class="{'selected': editDirection === 'vertical'}" @click="editDirection = 'vertical'">縦</div>
       <div class="radio" :class="{'selected': editDirection === 'horizontal'}" @click="editDirection = 'horizontal'">横</div>
     </div>
@@ -216,8 +216,59 @@
     </div>
 
     <div id="poem">
-      <h2>このサイトは何？</h2>
-      // TODO
+      <h2>このサイトは何？(ﾖﾏﾅｸﾃｲｲﾖ)</h2>
+      <p>本サイトは、画像をアートのように加工するためのオンラインツールです。以下のような機能を提供しています。</p>
+
+      <h3>1. 画像の切り絵風加工</h3>
+      <ul>
+        <li><strong>ファイル選択</strong>: 任意の画像ファイルを選択してアップロードできます。</li>
+        <li><strong>画像の表示</strong>: 選択した画像をそのまま表示します。</li>
+        <li><strong>ノイズ除去</strong>: 画像の不要なノイズを除去し、クリアな状態にします。</li>
+        <li><strong>輪郭抽出</strong>: 輪郭検出アルゴリズムを使用して、画像の輪郭を抽出します。</li>
+        <li><strong>太さ調整</strong>: 抽出された輪郭の太さを調整できます。</li>
+        <li><strong>溶かす</strong>: 画像の輪郭を滑らかにし、切り絵のような効果を強調します。</li>
+      </ul>
+
+      <h3>2. 画像の輪郭抽出</h3>
+      <ul>
+        <li><strong>輪郭検出法の選択</strong>: Sobelフィルター、Prewittフィルター、Cannyエッジ検出、Laplacianフィルターなど、複数のアルゴリズムから選択できます。</li>
+        <li><strong>エッジ検出の閾値調整</strong>: Cannyエッジ検出法の場合、低閾値と高閾値を設定できます。</li>
+        <li><strong>2値化</strong>: 画像を白黒の2値に変換し、輪郭を強調します。</li>
+        <li><strong>ガンマ補正</strong>: 画像の明るさを調整して、輪郭の見え方を変えます。</li>
+      </ul>
+
+      <h3>使い方</h3>
+      <ol>
+        <li><strong>画像のアップロード</strong>: 「ファイルを選択」ボタンをクリックして、画像ファイルをアップロードします。ドラッグ&ドロップやCtrl+Vで貼り付けることも可能です。</li>
+        <li v-if="!isMobile"><strong>編集方向の選択</strong>: 「縦」または「横」の編集方向を選択します。</li>
+        <li><strong>加工ボタンの利用</strong>: ノイズ除去、太く、溶かすなどのアクションボタンをクリックして、画像を加工します。</li>
+        <li><strong>輪郭検出法の選択と調整</strong>: 必要に応じて、輪郭検出法やエッジ検出の閾値を調整します。</li>
+        <li v-if="isMobile"><strong>画像のダウンロード</strong>: 加工した画像は右クリックでダウンロードできます。</li>
+        <li v-else><strong>画像のダウンロード</strong>: 加工した画像は長押しでダウンロードできます。</li>
+      </ol>
+
+      <h3>HELP</h3>
+      <ul>
+        <li><strong>輪郭が少ない</strong>: 「輪郭黒」の値を大きくしてください。</li>
+        <li><strong>2値化なしで有色部がなくなる</strong>: これは仕様です。</li>
+        <li><strong>邪魔な線がある/一部の線がない</strong>: 細かい調整はペイントソフトなどで行ってください。</li>
+      </ul>
+
+      <h3>このツールの利点</h3>
+      <ul>
+        <li><strong>シンプルな操作</strong>: 直感的に使えるインターフェースで、誰でも簡単に画像を加工できます。</li>
+        <li><strong>多機能</strong>: ノイズ除去、輪郭抽出、太さ調整、2値化、ガンマ補正など、多様な機能を一つのツールで実現。</li>
+        <li><strong>オンラインで完結</strong>: インストール不要で、ウェブブラウザだけで利用できます。</li>
+      </ul>
+
+      <h3>こんな時に使えます</h3>
+      <ul>
+        <li><strong>アート作品の制作</strong>: 写真を切り絵風に加工して、オリジナルアートを作成できます。</li>
+        <li><strong>学術研究</strong>: 画像の輪郭を抽出して、研究資料やプレゼンテーションに活用できます。</li>
+        <li><strong>SNS投稿</strong>: 写真をユニークに加工して、SNSに投稿してみましょう。</li>
+      </ul>
+
+      <p>ぜひ、このツールを使って、あなたの画像を素敵に変身させてください！</p>
     </div>
 
     <div id="processing" v-show="isProcessing">
