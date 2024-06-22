@@ -65,6 +65,7 @@ const App = {
                 }
             }
             if (imageItem === null) {
+                isLoadingInputImage = false;
                 return;
             }
         
