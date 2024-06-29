@@ -7,10 +7,18 @@ function kirieFilter(imageData, outlineThreshold = 180, fillThreshold = 100) {
     const height = imageData.height;
 
     for (let i = 0; i < data.length; i += 4) {
-        const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-        data[i] = avg;
-        data[i + 1] = avg;
-        data[i + 2] = avg;
+        if (data[i + 3] === 0) {
+            data[i] = 255;
+            data[i + 1] = 255;
+            data[i + 2] = 255;
+        }
+        else {
+            const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+            data[i] = avg;
+            data[i + 1] = avg;
+            data[i + 2] = avg;
+        }
+        data[i + 3] = 255;
     }
 
     const sobelData = new Uint8ClampedArray(width * height);
@@ -53,39 +61,15 @@ function kirieFilter(imageData, outlineThreshold = 180, fillThreshold = 100) {
                 data[idx    ] = 0;
                 data[idx + 1] = 0;
                 data[idx + 2] = 0;
-                data[idx + 3] = 255;
             }
             else {
                 data[idx    ] = 255;
                 data[idx + 1] = 255;
                 data[idx + 2] = 255;
-                data[idx + 3] = 255;
             }
         }
     }
 
     // ノイズ除去
     medianFilter(imageData);
-}
-
-function medianFilter(imageData) {
-    const data = imageData.data;
-    const width = imageData.width;
-    const height = imageData.height;
-    const copy = new Uint8ClampedArray(data);
-    for (let y = 1; y < height - 1; y++) {
-        for (let x = 1; x < width - 1; x++) {
-            const pixels = [];
-            for (let dy = -1; dy <= 1; dy++) {
-                for (let dx = -1; dx <= 1; dx++) {
-                    const index = ((y + dy) * width + (x + dx)) * 4;
-                    pixels.push(copy[index]);
-                }
-            }
-            pixels.sort((a, b) => a - b);
-            data[(y * width + x) * 4] = pixels[4];
-            data[(y * width + x) * 4 + 1] = pixels[4];
-            data[(y * width + x) * 4 + 2] = pixels[4];
-        }
-    }
 }

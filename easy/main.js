@@ -1,6 +1,6 @@
 
 const srcImage = document.querySelector("#src");
-const dstCanvas = document.querySelector("#dst");
+const dstImage = document.querySelector("#dst");
 
 const inputFile = document.querySelector("#input-file");
 const inputOutlineThreshold = document.querySelector("#input-outline-threshold");
@@ -43,8 +43,7 @@ inputFillThreshold.onchange = e => {
 };
 
 function updateCanvas() {
-    dstCanvas.width = srcImage.width;
-    dstCanvas.height = srcImage.height;
+    const dstCanvas = new OffscreenCanvas(srcImage.width, srcImage.height);
     const context = dstCanvas.getContext("2d", { willReadFrequently: true });
 
     context.drawImage(srcImage, 0, 0);
@@ -54,6 +53,10 @@ function updateCanvas() {
     kirieFilter(imageData, outlineThreshold, fillThreshold);
 
     context.putImageData(imageData, 0, 0);
+
+    canvasToBase64(dstCanvas).then(base64 => {
+        dstImage.src = base64;
+    });
 }
 
 
