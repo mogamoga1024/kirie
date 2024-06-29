@@ -283,8 +283,8 @@ const App = {
             worker?.terminate();
             worker = new Worker("./worker/create_image_worker.js");
             worker.onmessage = e => {
-                this.$refs.srcImage.style.maxWidth = imageWidth + "px";
-                this.$refs.dstImage.style.maxWidth = imageWidth + "px";
+                this.$refs.srcImage.style.maxWidth = "100%";
+                this.$refs.dstImage.style.maxWidth = "100%";
                 this.$refs.srcImage.style.aspectRatio = "";
                 this.$refs.dstImage.style.aspectRatio = "";
                 this.$refs.srcImage.src = e.data.sBase64;
