@@ -49,13 +49,7 @@ function kirieFilter(imageData, outlineThreshold = 180, fillThreshold = 100) {
             const idx = (y * width + x) * 4;
             const invertedMagnitude = 255 - sobelData[y * width + x];
 
-            if (invertedMagnitude < outlineThreshold) {
-                data[idx    ] = 0;
-                data[idx + 1] = 0;
-                data[idx + 2] = 0;
-                data[idx + 3] = 255;
-            }
-            else if (data[idx] < fillThreshold) {
+            if (invertedMagnitude < outlineThreshold || data[idx] < fillThreshold) {
                 data[idx    ] = 0;
                 data[idx + 1] = 0;
                 data[idx + 2] = 0;
