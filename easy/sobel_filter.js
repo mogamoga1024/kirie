@@ -46,10 +46,19 @@ function sobelFilter(imageData, outlineThreshold = 180, fillThreshold = 100) {
         for (let x = 0; x < width; x++) {
             const idx = (y * width + x) * 4;
             const invertedMagnitude = 255 - sobelData[y * width + x];
-            data[idx] = invertedMagnitude;
-            data[idx + 1] = invertedMagnitude;
-            data[idx + 2] = invertedMagnitude;
-            data[idx + 3] = 255;
+
+            if (invertedMagnitude < outlineThreshold) {
+                data[idx    ] = 0;
+                data[idx + 1] = 0;
+                data[idx + 2] = 0;
+                data[idx + 3] = 255;
+            }
+            else {
+                data[idx    ] = 255;
+                data[idx + 1] = 255;
+                data[idx + 2] = 255;
+                data[idx + 3] = 255;
+            }
         }
     }
 }

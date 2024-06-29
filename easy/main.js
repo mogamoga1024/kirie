@@ -13,10 +13,19 @@ srcImage.onload = () => {
     updateCanvas();
 };
 
+inputOutlineThreshold.onchange = e => {
+    outlineThreshold = Number(e.target.value);
+    updateCanvas();
+};
+inputFillThreshold.onchange = e => {
+    fillThreshold = Number(e.target.value);
+    updateCanvas();
+};
+
 function updateCanvas() {
     dstCanvas.width = srcImage.width;
     dstCanvas.height = srcImage.height;
-    const context = dstCanvas.getContext("2d");
+    const context = dstCanvas.getContext("2d", { willReadFrequently: true });
 
     context.drawImage(srcImage, 0, 0);
 
