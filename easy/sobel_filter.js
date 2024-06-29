@@ -1,5 +1,5 @@
 
-function sobelFilter(imageData, outlineThreshold = 180, fillThreshold = 200) {
+function sobelFilter(imageData, outlineThreshold = 180, fillThreshold = 100) {
     const data = imageData.data;
     const width = imageData.width;
     const height = imageData.height;

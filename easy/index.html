@@ -4,11 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>簡単切り絵加工ツール</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>簡単切り絵加工ツール</h1>
   <img id="src">
-  <canvas id="dst"></canvas>
+
+  <div style="margin-top: 8px;">
+    <label for="input-outline-threshold">輪郭</label>
+    <input type="number" id="input-outline-threshold" min="0" max="255" value="180">
+  </div>
+
+  <div style="margin-top: 8px;">
+    <label for="input-fill-threshold">有色部</label>
+    <input type="number" id="input-fill-threshold" min="0" max="255" value="100">
+  </div>
+
+  <canvas id="dst" style="margin-top: 8px;"></canvas>
+
+  <div style="margin-top: 16px; margin-bottom: 16px;">
+    <a href="../index.html">本家はこちら</a>
+  </div>
 
   <script src="sobel_filter.js"></script>
   <script src="main.js"></script>

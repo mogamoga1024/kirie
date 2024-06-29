@@ -1,0 +1,17 @@
+
+*:not(h1) {
+  font-size: 18px;
+}
+
+img, canvas {
+  display: block;
+}
+
+label {
+  display: inline-block;
+  width: 60px;
+}
+
+input[type="number"] {
+  width: 100px;
+}

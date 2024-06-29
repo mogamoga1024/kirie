@@ -2,9 +2,18 @@
 const srcImage = document.querySelector("#src");
 const dstCanvas = document.querySelector("#dst");
 
-srcImage.src = "../images/3.jpg";
+const inputOutlineThreshold = document.querySelector("#input-outline-threshold");
+const inputFillThreshold = document.querySelector("#input-fill-threshold");
 
+let outlineThreshold = 180;
+let fillThreshold = 100;
+
+srcImage.src = "../images/3.jpg";
 srcImage.onload = () => {
+    updateCanvas();
+};
+
+function updateCanvas() {
     dstCanvas.width = srcImage.width;
     dstCanvas.height = srcImage.height;
     const context = dstCanvas.getContext("2d");
@@ -13,8 +22,9 @@ srcImage.onload = () => {
 
     const imageData = context.getImageData(0, 0, dstCanvas.width, dstCanvas.height);
 
-    sobelFilter(imageData);
+    sobelFilter(imageData, outlineThreshold, fillThreshold);
 
     context.putImageData(imageData, 0, 0);
-};
+}
+
 
