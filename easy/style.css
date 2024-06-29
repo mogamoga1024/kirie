@@ -3,8 +3,9 @@
   font-size: 18px;
 }
 
-img, canvas {
+img {
   display: block;
+  max-width: 100%;
 }
 
 label {
