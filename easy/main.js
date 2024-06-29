@@ -2,7 +2,7 @@
 const srcImage = document.querySelector("#src");
 const dstCanvas = document.querySelector("#dst");
 
-srcImage.src = "./1.jpg";
+srcImage.src = "../images/3.jpg";
 
 srcImage.onload = () => {
     dstCanvas.width = srcImage.width;
