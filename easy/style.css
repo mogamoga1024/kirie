@@ -9,7 +9,10 @@ img, canvas {
 
 label {
   display: inline-block;
-  width: 60px;
+  
+  .hosoku {
+    font-size: 12px;
+  }
 }
 
 input[type="number"] {
