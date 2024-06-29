@@ -1,5 +1,7 @@
 
 function kirieFilter(imageData, outlineThreshold = 180, fillThreshold = 100) {
+    // sobelフィルタによる輪郭抽出
+    
     const data = imageData.data;
     const width = imageData.width;
     const height = imageData.height;
@@ -65,6 +67,31 @@ function kirieFilter(imageData, outlineThreshold = 180, fillThreshold = 100) {
                 data[idx + 2] = 255;
                 data[idx + 3] = 255;
             }
+        }
+    }
+
+    // ノイズ除去
+    medianFilter(imageData);
+}
+
+function medianFilter(imageData) {
+    const data = imageData.data;
+    const width = imageData.width;
+    const height = imageData.height;
+    const copy = new Uint8ClampedArray(data);
+    for (let y = 1; y < height - 1; y++) {
+        for (let x = 1; x < width - 1; x++) {
+            const pixels = [];
+            for (let dy = -1; dy <= 1; dy++) {
+                for (let dx = -1; dx <= 1; dx++) {
+                    const index = ((y + dy) * width + (x + dx)) * 4;
+                    pixels.push(copy[index]);
+                }
+            }
+            pixels.sort((a, b) => a - b);
+            data[(y * width + x) * 4] = pixels[4];
+            data[(y * width + x) * 4 + 1] = pixels[4];
+            data[(y * width + x) * 4 + 2] = pixels[4];
         }
     }
 }

@@ -8,7 +8,10 @@
 </head>
 <body>
   <h1>簡単切り絵加工ツール</h1>
-  <img id="src">
+
+  <input type="file" id="input-file">
+
+  <img id="src" style="margin-top: 8px;">
 
   <div style="margin-top: 8px;">
     <label for="input-outline-threshold">輪郭黒 <span class="hosoku">少:0-255:多</span></label>
@@ -21,6 +24,8 @@
   </div>
 
   <canvas id="dst" style="margin-top: 8px;"></canvas>
+
+  <div style="margin-top: 8px;">画像は右クリックからダウンロード可能</div>
 
   <div style="margin-top: 16px; margin-bottom: 16px;">
     <a href="../index.html">本家はこちら</a>
