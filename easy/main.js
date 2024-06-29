@@ -31,7 +31,7 @@ function updateCanvas() {
 
     const imageData = context.getImageData(0, 0, dstCanvas.width, dstCanvas.height);
 
-    sobelFilter(imageData, outlineThreshold, fillThreshold);
+    kirieFilter(imageData, outlineThreshold, fillThreshold);
 
     context.putImageData(imageData, 0, 0);
 }
