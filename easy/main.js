@@ -43,7 +43,7 @@ inputFillThreshold.onchange = e => {
 };
 
 function updateCanvas() {
-    const dstCanvas = new OffscreenCanvas(srcImage.width, srcImage.height);
+    const dstCanvas = new OffscreenCanvas(srcImage.naturalWidth, srcImage.naturalHeight);
     const context = dstCanvas.getContext("2d", { willReadFrequently: true });
 
     context.drawImage(srcImage, 0, 0);
